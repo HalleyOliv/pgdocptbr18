@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>2. Uma breve história do PostgreSQL - PostgreSQL 18.1</title><link rel="stylesheet" type="text/css" href="stylesheet.css" /><link rev="made" href="pgsql-docs@lists.postgresql.org" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="intro-whatis.html" title="1. O que é o PostgreSQL?" /><link rel="next" href="notation.html" title="3. Convenções" /></head><body id="docContent" class="container-fluid col-10"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="5" align="center">2. Uma breve história do <span class="productname">PostgreSQL</span></th></tr><tr><td width="10%" align="left"><a accesskey="p" href="intro-whatis.html" title="1.  O que é o PostgreSQL?">Anterior</a> </td><td width="10%" align="left"><a accesskey="u" href="preface.html" title="Prefácio">Acima</a></td><th width="60%" align="center">Prefácio</th><td width="10%" align="right"><a accesskey="h" href="index.html" title="Documentação do PostgreSQL 18.1">Principal</a></td><td width="10%" align="right"> <a accesskey="n" href="notation.html" title="3. Convenções">Próxima</a></td></tr></table><hr /></div><div class="sect1" id="HISTORY"><div class="titlepage"><div><div><h2 class="title" style="clear: both">2. Uma breve história do <span class="productname">PostgreSQL</span> <a href="#HISTORY" class="id_link">#</a></h2></div></div></div><div class="toc"><dl class="toc"><dt><span class="sect2"><a href="history.html#HISTORY-BERKELEY">2.1. O Projeto <span class="productname">POSTGRES</span> de Berkeley</a></span></dt><dt><span class="sect2"><a href="history.html#HISTORY-POSTGRES95">2.2. <span class="productname">Postgres95</span></a></span></dt><dt><span class="sect2"><a href="history.html#HISTORY-POSTGRESQL">2.3. <span class="productname">PostgreSQL</span></a></span></dt></dl></div><a id="id-1.3.5.2" class="indexterm"></a><p>
+  O sistema de gerenciamento de banco de dados objeto-relacional hoje
+  conhecido como <span class="productname">PostgreSQL</span> é derivado do
+  pacote <span class="productname">POSTGRES</span> escrito na Universidade da
+  Califórnia em Berkeley. 
+  Com décadas de desenvolvimento como base, o <span class="productname">PostgreSQL</span> 
+  é atualmente o mais avançado banco de dados de código aberto disponível.
+ </p><p>
+  Uma outra perspectiva sobre a história aqui apresentada pode ser encontrada 
+  na publicação do Dr. Joe Hellerstein <span class="quote">“<span class="quote">Looking Back at Postgres</span>”</span>
+  (<a class="xref" href="biblio.html#HELL18">[hell18]</a>).
+ </p><div class="sect2" id="HISTORY-BERKELEY"><div class="titlepage"><div><div><h3 class="title">2.1. O Projeto <span class="productname">POSTGRES</span> de Berkeley <a href="#HISTORY-BERKELEY" class="id_link">#</a></h3></div></div></div><a id="id-1.3.5.5.2" class="indexterm"></a><p>
+   O projeto <span class="productname">POSTGRES</span>,
+   liderado pelo Professor Michael Stonebraker,
+   foi patrocinado pela
+   <a class="ulink" href="http://www.darpa.mil/" target="_top">
+   Defense Advanced Research Projects Agency
+   (<acronym class="acronym">DARPA</acronym>)</a>, pelo
+   <a class="ulink" href="https://www.arl.army.mil/who-we-are/aro/" target="_top">
+   Army Research Office (<acronym class="acronym">ARO</acronym>)</a>, pela
+   <a class="ulink" href="http://www.nsf.gov/" target="_top">
+   National Science Foundation (<acronym class="acronym">NSF</acronym>)</a>
+   e pela ESL, Inc.
+   A implementação do <span class="productname">POSTGRES</span>
+   começou em 1986.
+   Os conceitos iniciais do sistema foram apresentados em
+   <a class="xref" href="biblio.html#STON86">[ston86]</a>,
+   e a definição do modelo de dados inicial foi descrita em
+   <a class="xref" href="biblio.html#ROWE87">[rowe87]</a>.
+   O projeto do sistema de regras dessa época foi descrito em
+   <a class="xref" href="biblio.html#STON87A">[ston87a]</a>.
+   A lógica e a arquitetura do gerenciador de armazenamento foram
+   detalhadas em <a class="xref" href="biblio.html#STON87B">[ston87b]</a>.
+  </p><p>
+   O <span class="productname">POSTGRES</span> passou por várias versões
+   importantes desde então. O primeiro sistema <span class="quote">“<span class="quote">demoware</span>”</span>
+   se tornou operacional em 1987 e foi exibido em 1988 na Conferência
+   <acronym class="acronym">ACM-SIGMOD</acronym>. A Versão 1, descrita em
+   <a class="xref" href="biblio.html#STON90A">[ston90a]</a>, foi liberada para alguns poucos usuários
+   externos em junho de 1989.
+    Em resposta à crítica ao primeiro sistema de regras
+   (<a class="xref" href="biblio.html#STON89">[ston89]</a>), o sistema de regras foi reprojetado
+   (<a class="xref" href="biblio.html#STON90B">[ston90b]</a>),  e a Versão 2 foi liberada em junho de
+   1990, com o novo sistema de regras.
+   A versão 3 surgiu em 1991, adicionando suporte para múltiplos
+   gerenciadores de armazenamento, um executor de consultas melhorado
+   e um sistema de regras reescrito.
+   Na maioria das vezes, as versões seguintes até o
+   <span class="productname">Postgres95</span> (veja abaixo)
+   focaram na portabilidade e na confiabilidade.
+  </p><p>
+   O <span class="productname">POSTGRES</span> tem sido usado para implementar
+   muitas aplicações diferentes de pesquisa e produção. Dentre essas estão:
+   um sistema de análise de dados financeiros, um pacote de monitoramento
+   de desempenho de motores a jato, um banco de dados de rastreamento de
+   asteroides, um banco de dados de informações médicas e vários sistemas
+   de informações geográficas.
+   O <span class="productname">POSTGRES</span> também tem sido usado como
+   ferramenta educacional em várias universidades. Por fim, a
+   Illustra Information Technologies (posteriormente incorporada pela
+   <a class="ulink" href="https://www.ibm.com/analytics/informix" target="_top"><span class="productname">Informix</span></a>,
+   que agora pertence à <a class="ulink" href="https://www.ibm.com/" target="_top">IBM</a>)
+   pegou o código e o comercializou.
+   No final de 1992, o PostgreSQL tornou-se o principal gerenciador de dados 
+   para o projeto de computação científica Sequoia 2000, descrito em
+   <a class="xref" href="biblio.html#STON92">[ston92]</a>.
+  </p><p>
+   O tamanho da comunidade de usuários externos praticamente dobrou
+   durante o ano de 1993. Começou a ficar cada vez mais óbvio que a
+   manutenção do código do protótipo e o suporte estavam consumindo
+   grande parte do tempo que deveria ser dedicado à pesquisa de banco
+   de dados. Em um esforço para reduzir essa sobrecarga de suporte,
+   o projeto do <span class="productname">POSTGRES</span> de Berkeley terminou
+   oficialmente na versão 4.2.
+  </p></div><div class="sect2" id="HISTORY-POSTGRES95"><div class="titlepage"><div><div><h3 class="title">2.2. <span class="productname">Postgres95</span> <a href="#HISTORY-POSTGRES95" class="id_link">#</a></h3></div></div></div><a id="id-1.3.5.6.2" class="indexterm"></a><p>
+   Em 1994, Andrew Yu e Jolly Chen adicionaram um interpretador da
+   linguagem <acronym class="acronym">SQL</acronym> ao <span class="productname">POSTGRES</span>.
+   Sob um novo nome, o <span class="productname">Postgres95</span> foi em
+   seguida liberado na Web para encontrar seu próprio caminho no mundo,
+   como descendente de código aberto do código original do
+   <span class="productname">POSTGRES</span> de Berkeley.
+  </p><p>
+   O código do <span class="productname">Postgres95</span> era inteiramente
+   escrito em ANSI C, com tamanho reduzido em 25%. Muitas mudanças
+   internas melhoraram o desempenho e a facilidade de manutenção.
+   O <span class="productname">Postgres95</span> versão
+   1.0.x era cerca de 30–50% mais rápido, pelo
+   <a class="ulink" href="http://jimgray.azurewebsites.net/benchmarkhandbook/chapter4.pdf" target="_top">
+   Wisconsin Benchmark</a>,
+   se comparado com o <span class="productname">POSTGRES</span> versão 4.2.
+   Além da correção de erros, as principais melhorias foram as seguintes:
+
+   </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p>
+      A linguagem de consultas PostQUEL foi substituída pela linguagem
+      <acronym class="acronym">SQL</acronym> (implementada no servidor).
+      (A biblioteca de interface <a class="link" href="libpq.html" title="Capítulo 32. libpq — C Library">libpq</a>
+      recebeu esse nome a partir da linguagem PostQUEL.)
+      Consultas aninhadas não eram aceitas antes do
+      <span class="productname">PostgreSQL</span> (veja abaixo), mas essas
+      podiam ser imitadas no <span class="productname">Postgres95</span> por
+      meio de funções <acronym class="acronym">SQL</acronym> definidas pelo usuário.
+      As funções de agregação foram reimplementadas. Também foi adicionado
+      suporte à cláusula <code class="literal">GROUP BY</code> nas consultas.
+     </p></li><li class="listitem"><p>
+      Foi fornecido um novo programa para executar comandos
+      <acronym class="acronym">SQL</acronym> interativos, o <span class="application">psql</span>,
+      utilizando o <span class="application">Readline</span> do
+      <acronym class="acronym">GNU</acronym>, que substituiu com vantagens o programa
+      <span class="application">monitor</span> antigo.
+     </p></li><li class="listitem"><p>
+      Uma nova biblioteca <code class="literal">front-end</code>, a
+      <code class="filename">libpgtcl</code>, dava suporte a clientes baseados no
+      <acronym class="acronym">Tcl</acronym>.  Um exemplo de <code class="literal">shell</code>, o
+      <code class="command">pgtclsh</code>, forneceu novos comandos Tcl para
+       interfacear programas <span class="application">Tcl</span> com o
+       servidor <span class="productname">Postgres95</span>.
+     </p></li><li class="listitem"><p>
+      A interface para gerenciar <span class="quote">“<span class="quote">Objetos Grandes</span>”</span> foi
+      reescrita; até então o único mecanismo para armazenar esses
+      objetos era o sistema de arquivos inversão
+      <a href="#ftn.id-1.3.5.6.4.5.4.1.2" class="footnote"><sup class="footnote" id="id-1.3.5.6.4.5.4.1.2">[1]</sup></a>
+      <a href="#ftn.id-1.3.5.6.4.5.4.1.3" class="footnote"><sup class="footnote" id="id-1.3.5.6.4.5.4.1.3">[2]</sup></a>
+      (O sistema de arquivos inversão foi removido).
+     </p></li><li class="listitem"><p>
+      O sistema de regras no nível de instância foi removido.
+      As regras ainda eram disponíveis como regras de reescrita.
+     </p></li><li class="listitem"><p>
+      Um breve tutorial introduzindo as funcionalidades regulares da
+      linguagem <acronym class="acronym">SQL</acronym>, assim como as do
+      <span class="productname">Postgres95</span>, era distribuído com
+      o código-fonte.
+     </p></li><li class="listitem"><p>
+      O utilitário
+      <a class="ulink" href="https://www.gnu.org/software/make/" target="_top">make</a>
+      do <acronym class="acronym">GNU</acronym>
+      (em vez do <code class="literal">make</code> do <acronym class="acronym">BSD</acronym>)
+      era utilizado para a geração. Além disso, o
+      <span class="productname">Postgres95</span> podia ser compilado pelo
+      <span class="productname">GCC</span> não corrigido
+      (o alinhamento dos dados de precisão dupla foi corrigido).
+     </p></li></ul></div><p>
+  </p></div><div class="sect2" id="HISTORY-POSTGRESQL"><div class="titlepage"><div><div><h3 class="title">2.3. <span class="productname">PostgreSQL</span> <a href="#HISTORY-POSTGRESQL" class="id_link">#</a></h3></div></div></div><p>
+   Em 1996 ficou claro que o nome <span class="quote">“<span class="quote">Postgres95</span>”</span> não
+   resistiria ao teste do tempo. Foi escolhido um novo nome,
+   <span class="productname">PostgreSQL</span>, para refletir o relacionamento
+   entre o <span class="productname">POSTGRES</span> original e as versões mais
+   recentes com capacidade <acronym class="acronym">SQL</acronym>.
+   Ao mesmo tempo, foi mudado o número da versão para começar em 6.0,
+   colocando a numeração de volta à sequência original começada pelo
+   projeto <span class="productname">POSTGRES</span> de Berkeley.
+  </p><p>
+   <span class="productname">Postgres</span> ainda é considerado o nome de projeto oficial, 
+   tanto por tradição quanto porque as pessoas acham mais fácil pronunciar 
+   <span class="productname">Postgres</span> do que <span class="productname">PostgreSQL</span>.
+  </p><p>
+   Durante o desenvolvimento do <span class="productname">Postgres95</span>, 
+   a ênfase foi na identificação e compreensão dos problemas existentes 
+   no código do servidor.
+   Com o <span class="productname">PostgreSQL</span>, a ênfase mudou para o 
+   aprimoramento de recursos e capacidades, embora o trabalho continue 
+   em todas as áreas.
+  </p><p>
+   Os detalhes sobre o que aconteceu em cada versão do <span class="productname">PostgreSQL</span> 
+   desde então podem ser encontrados em
+   <a class="ulink" href="https://www.postgresql.org/docs/release/" target="_top">Release Notes</a>.
+  </p></div><div class="footnotes"><br /><hr style="width:100; text-align:left;margin-left: 0" /><div id="ftn.id-1.3.5.6.4.5.4.1.2" class="footnote"><p><a href="#id-1.3.5.6.4.5.4.1.2" class="para"><sup class="para">[1] </sup></a>
+        <a class="ulink" href="https://dsf.berkeley.edu/papers/S2K-93-28.pdf" target="_top">Inversion file system</a>: Esse sistema de arquivos se
+        chama <span class="quote">“<span class="quote">Inversão</span>”</span>, porque as funções convencionais
+        do sistema de arquivos e do sistema de banco de dados estão
+        invertidas, roda sobre o <span class="productname">POSTGRES</span>.
+        (N. T.)
+       </p></div><div id="ftn.id-1.3.5.6.4.5.4.1.3" class="footnote"><p><a href="#id-1.3.5.6.4.5.4.1.3" class="para"><sup class="para">[2] </sup></a>
+        A implementação da inversão de objetos grandes divide os
+        objetos grandes em "pedaços" e armazena os pedaços em linhas
+        no banco de dados.
+        Um índice árvore-B garante a procura rápida do número correto do
+        pedaço ao serem feitos acessos aleatórios de leitura e escrita.
+        Manual de Referência do PostgreSQL 6.3 (N. T.)
+       </p></div></div></div><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="intro-whatis.html" title="1.  O que é o PostgreSQL?">Anterior</a> </td><td width="20%" align="center"><a accesskey="u" href="preface.html" title="Prefácio">Acima</a></td><td width="40%" align="right"> <a accesskey="n" href="notation.html" title="3. Convenções">Próxima</a></td></tr><tr><td width="40%" align="left" valign="top">1.  O que é o <span class="productname">PostgreSQL</span>? </td><td width="20%" align="center"><a accesskey="h" href="index.html" title="Documentação do PostgreSQL 18.1">Principal</a></td><td width="40%" align="right" valign="top"> 3. Convenções</td></tr></table></div></body></html>
