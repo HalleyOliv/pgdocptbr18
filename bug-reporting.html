@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>5. Diretrizes para relatar erros - PostgreSQL 18.1</title><link rel="stylesheet" type="text/css" href="stylesheet.css" /><link rev="made" href="pgsql-docs@lists.postgresql.org" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="resources.html" title="4. Informações adicionais" /><link rel="next" href="tutorial.html" title="Parte I. Tutorial" /></head><body id="docContent" class="container-fluid col-10"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="5" align="center">5. Diretrizes para relatar erros</th></tr><tr><td width="10%" align="left"><a accesskey="p" href="resources.html" title="4. Informações adicionais">Anterior</a> </td><td width="10%" align="left"><a accesskey="u" href="preface.html" title="Prefácio">Acima</a></td><th width="60%" align="center">Prefácio</th><td width="10%" align="right"><a accesskey="h" href="index.html" title="Documentação do PostgreSQL 18.1">Principal</a></td><td width="10%" align="right"> <a accesskey="n" href="tutorial.html" title="Parte I. Tutorial">Próxima</a></td></tr></table><hr /></div><div class="sect1" id="BUG-REPORTING"><div class="titlepage"><div><div><h2 class="title" style="clear: both">5. Diretrizes para relatar erros <a href="#BUG-REPORTING" class="id_link">#</a></h2></div></div></div><div class="toc"><dl class="toc"><dt><span class="sect2"><a href="bug-reporting.html#BUG-REPORTING-IDENTIFYING-BUGS">5.1. Identificação de erros</a></span></dt><dt><span class="sect2"><a href="bug-reporting.html#BUG-REPORTING-WHAT-TO-REPORT">5.2. O que relatar</a></span></dt><dt><span class="sect2"><a href="bug-reporting.html#BUG-REPORTING-WHERE-TO-REPORT-BUGS">5.3. Onde relatar erros?</a></span></dt></dl></div><p>
+  Quando você encontra um erro (<span class="foreignphrase"><em class="foreignphrase">bug</em></span>) no
+  <span class="productname">PostgreSQL</span>, queremos ser informados sobre ele.
+  Seus relatórios de erro desempenham um papel importante para tornar o
+  <span class="productname">PostgreSQL</span> mais confiável, porque, mesmo
+  com o maior cuidado, não podemos garantir que todas as partes do
+  <span class="productname">PostgreSQL</span> funcionem corretamente em todas
+  as plataformas e em todas as circunstâncias.
+ </p><p>
+  As sugestões abaixo têm por objetivo treiná-lo a preencher relatórios
+  de erro que possam ser tratados de forma eficaz. Não é obrigatório
+  segui-las, mas são feitas para serem vantajosas para todos.
+ </p><p>
+  Não podemos prometer corrigir todos os erros imediatamente.
+  Se o erro for óbvio, crítico ou afetar muitos usuários,
+  haverá uma boa chance de alguém investigá-lo.
+  Também pode acontecer de solicitarmos que você atualize para uma
+  versão mais recente para verificar se o erro ainda acontece.
+  Ou podemos decidir que o erro não pode ser corrigido antes que alguma
+  grande reescrita que possamos estar planejando seja feita.
+  Ou talvez seja simplesmente muito difícil e há coisas mais importantes
+  na agenda. Se você precisar de ajuda imediatamente, considere obter um
+  contrato de suporte comercial.
+ </p><div class="sect2" id="BUG-REPORTING-IDENTIFYING-BUGS"><div class="titlepage"><div><div><h3 class="title">5.1. Identificação de erros <a href="#BUG-REPORTING-IDENTIFYING-BUGS" class="id_link">#</a></h3></div></div></div><p>
+   Antes de relatar um erro, por favor, leia e releia a documentação para
+   verificar se realmente pode ser feito o que você está tentando fazer.
+   Se não estiver claro na documentação se pode ou não ser feito,
+   por favor, informe isso também; é uma falha na documentação.
+   Se for visto que o programa faz algo diferente do que está
+   dito na documentação, isso também é um erro.
+   Pode incluir, mas não está limitado, as seguintes circunstâncias:
+
+   </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p>
+      O programa termina com um erro fatal ou com uma mensagem de erro
+      do sistema operacional que aponta para um problema no programa
+      (um exemplo oposto seria uma mensagem de <span class="quote">“<span class="quote">disco cheio</span>”</span>,
+      porque você mesmo deve corrigir este problema).
+     </p></li><li class="listitem"><p>
+      O programa produz uma saída errada para qualquer entrada dada.
+     </p></li><li class="listitem"><p>
+      O programa se recusa a aceitar uma entrada válida
+      (conforme definido na documentação).
+     </p></li><li class="listitem"><p>
+      O programa aceita uma entrada inválida sem mostrar uma mensagem de
+      erro. Porém, tenha em mente que a sua ideia de entrada inválida
+      pode ser a nossa ideia de uma extensão ou de compatibilidade com
+      a prática tradicional.
+     </p></li><li class="listitem"><p>
+       Nas plataformas com suporte, o <span class="productname">PostgreSQL</span> 
+       falha ao compilar, construir ou instalar segundo as instruções.
+     </p></li></ul></div><p>
+
+   Aqui <span class="quote">“<span class="quote">programa</span>”</span> se refere a qualquer executável,
+   e não apenas ao processo servidor.
+  </p><p>
+   Estar lento ou drenando muitos recursos não é necessariamente um erro.
+   Leia a documentação, ou peça ajuda em uma das listas de discussão, para
+   otimizar suas aplicações.
+   Não estar em conformidade com o padrão <acronym class="acronym">SQL</acronym>
+   não é necessariamente um erro, a menos que esta conformidade
+   esteja explicitamente declarada.
+  </p><p>
+   Antes de continuar, verifique a lista TODO (a fazer) e a FAQ
+   para ver se o erro já é conhecido.
+   Se você não conseguir decodificar a informação da lista TODO,
+   relate seu problema.
+   O mínimo que podemos fazer é tornar a lista TODO mais clara.
+  </p></div><div class="sect2" id="BUG-REPORTING-WHAT-TO-REPORT"><div class="titlepage"><div><div><h3 class="title">5.2. O que relatar <a href="#BUG-REPORTING-WHAT-TO-REPORT" class="id_link">#</a></h3></div></div></div><p>
+   O mais importante a ser lembrado sobre relatórios de erros 
+   é fornecer todos os fatos, e somente os fatos.
+   Não especule sobre o que você acha que está errado, o que
+   <span class="quote">“<span class="quote">parece que deve ser feito</span>”</span>,
+   ou em que parte do programa está o erro.
+   Se você não estiver familiarizado com a implementação, provavelmente
+   vai supor errado, e não vai nos ajudar nem um pouco.
+   E, mesmo que você esteja correto, uma explicação abrangente é um
+   ótimo complemento, mas não substitui os fatos. Se formos corrigir o
+   erro, primeiro temos que vê-lo acontecer por nós mesmos.
+   Informar meramente os fatos é relativamente direto
+   (provavelmente pode ser copiado e colado a partir da tela),
+   mas muitas vezes são deixados de fora detalhes importantes,
+   porque se pensou que não tinham importância,
+   ou que o relatório seria entendido de qualquer forma.
+  </p><p>
+   Os seguintes itens devem estar contidos em todo relatório de erro:
+
+   </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p>
+      A sequência exata dos passos, <span class="emphasis"><em>desde o
+      início do programa</em></span>, necessários para
+      reproduzir o problema. Isto deve estar autocontido;
+      não é suficiente enviar meramente o comando
+      <code class="command">SELECT</code>, sem enviar os comandos
+      <code class="command">CREATE TABLE</code> e <code class="command">INSERT</code> que o
+      precederam, caso a saída dependa dos dados contidos nas tabelas.
+      Não temos tempo para realizar a engenharia reversa do esquema do
+      seu banco de dados e, se tivermos que criar nossos próprios dados,
+      provavelmente não vamos conseguir reproduzir o problema.
+     </p><p>
+      O melhor formato para um caso de teste, para problemas relacionados
+      com a linguagem <acronym class="acronym">SQL</acronym>, é um arquivo mostrando o
+      problema que possa ser executado a partir da interface cliente
+      <span class="application">psql</span> (certifique-se de não existir nada
+      em seu arquivo de inicialização <code class="filename">~/.psqlrc</code>).
+      Uma maneira fácil de criar este arquivo é usando o
+      <span class="application">pg_dump</span> para gerar as declarações da
+      tabela e dos dados necessários para montar o cenário e, depois,
+      adicionar o comando com problema.
+      Encorajamos você a minimizar o tamanho do exemplo, mas isso não é
+      absolutamente necessário. Se o erro for reproduzível, nós o
+      encontraremos de qualquer maneira.
+     </p><p>
+      Se a sua aplicação utiliza alguma outra interface cliente,
+      tal como o <span class="application">PHP</span>, então, por favor,
+      tente isolar o comando com o problema.
+      Provavelmente não iremos configurar um servidor Web para
+      reproduzir o seu problema. De qualquer maneira, lembre-se de
+      fornecer os arquivos de entrada exatos, e não suponha que o
+      problema aconteça com <span class="quote">“<span class="quote">arquivos grandes</span>”</span>, ou
+      <span class="quote">“<span class="quote">bancos de dados de tamanho médio</span>”</span>, etc.,
+      porque estas informações são muito pouco precisas para serem úteis.
+     </p></li><li class="listitem"><p>
+      A saída obtida. Por favor, não diga que <span class="quote">“<span class="quote">não funcionou</span>”</span>
+      ou que <span class="quote">“<span class="quote">deu pau</span>”</span> (<span class="foreignphrase"><em class="foreignphrase">crashed</em></span>).
+      Se houver uma mensagem de erro, mostre-a, mesmo que você não a entenda.
+      Se o programa terminar com um erro do sistema operacional, diga qual.
+      Se nada acontecer, informe.
+      Mesmo que o resultado do seu caso de teste seja o término anormal
+      do programa, ou seja, óbvio de alguma outra forma, pode ser que não
+      aconteça na nossa plataforma. O mais fácil a ser feito é copiar a
+      saída do terminal diretamente, se isso for possível.
+     </p><div class="note"><h3 class="title">Nota</h3><p>
+       Se estiver sendo relatada uma mensagem de erro, por favor, obtenha
+       a forma mais extensa da mensagem. No <span class="application">psql</span>
+       execute antes <code class="literal">\set VERBOSITY verbose</code>.
+       Se a mensagem estiver sendo extraída do log do servidor, defina o
+       parâmetro em tempo de execução <a class="xref" href="runtime-config-logging.html#GUC-LOG-ERROR-VERBOSITY">log_error_verbosity</a>
+       como <code class="literal">verbose</code>, para serem registrados todos os detalhes.
+      </p></div><div class="note"><h3 class="title">Nota</h3><p>
+       No caso de erros fatais, a mensagem de erro informada pelo cliente
+       pode não conter toda a informação disponível.
+       Por favor, olhe também a saída do log do servidor de banco de dados.
+       Se você não mantém a saída do log do servidor, esta é uma boa hora
+       para começar.
+      </p></div></li><li class="listitem"><p>
+      É muito importante especificar o que você espera como saída.
+      Se for escrito apenas <span class="quote">“<span class="quote">Esse comando produz esta saída</span>”</span>,
+      ou <span class="quote">“<span class="quote">Isso não é o que eu esperava</span>”</span>, poderemos executar,
+      olhar a saída, e achar que está tudo correto, exatamente o que
+      esperávamos que acontecesse. Não devemos gastar tempo decodificando
+      a semântica exata por trás de seus comandos. Abstenha-se,
+      particularmente, de dizer meramente <span class="quote">“<span class="quote">Isso não é o que o SQL diz
+      ou o que o Oracle faz</span>”</span>. Pesquisar o comportamento correto do
+      <acronym class="acronym">SQL</acronym> não é uma tarefa divertida, nem sabemos como
+      todos os outros bancos de dados relacionais existentes se comportam
+      (se o problema for o término anormal do programa, este item
+      obviamente pode ser omitido).
+     </p></li><li class="listitem"><p>
+      Todas as opções de linha de comando e outras opções de inicialização,
+      incluindo as variáveis de ambiente relevantes e os arquivos de
+      configuração alterados em relação ao padrão. Novamente,
+      forneça a informação exata. Se estiver sendo utilizada uma
+      distribuição pré-configurada, que inicializa o servidor de banco
+      de dados durante o <span class="foreignphrase"><em class="foreignphrase">boot</em></span>, você deve
+      tentar descobrir como isso é feito.
+     </p></li><li class="listitem"><p>
+      Qualquer coisa que você tenha feito que seja diferente das
+      instruções de instalação.
+     </p></li><li class="listitem"><p>
+      A versão do <span class="productname">PostgreSQL</span>.
+      Pode ser executado o comando <code class="literal">SELECT version();</code>
+      para descobrir a versão do servidor ao qual você está conectado.
+      A maioria dos programas executáveis também tem a opção
+      <code class="option">--version</code>; pelo menos
+      <code class="literal">postgres --version</code> e
+      <code class="literal">psql --version</code> devem funcionar.
+</p><pre class="screen">
+<code class="prompt">$</code> <strong class="userinput"><code>postgres --version</code></strong>
+postgres (PostgreSQL) 18.1
+<code class="prompt">$</code> <strong class="userinput"><code>psql --version</code></strong>
+psql (PostgreSQL) 18.1
+</pre><p>
+      Se a função ou as opções não existirem, então a versão sendo usada
+      é mais que antiga o suficiente para merecer uma atualização.
+      Se estiver sendo usada uma versão pré-configurada, como RPMs,
+      informe, incluindo qualquer sub-versão que o pacote possa ter.
+      Se estiver se referindo a uma versão do Git, isso deve ser
+      mencionado, incluindo a data e a hora da versão.
+     </p><p>
+      Se a sua versão for anterior a 18.1, quase certamente lhe
+      pediremos para atualizar. Existem muitas correções de erro e
+      melhorias em cada nova versão, portanto é bem possível que o
+      erro encontrado em uma versão antiga do
+      <span class="productname">PostgreSQL</span> já esteja corrigido.
+      Só podemos oferecer suporte limitado às instalações usando versões
+      antigas do <span class="productname">PostgreSQL</span>;
+      se for desejado mais do que pode ser fornecido, deve ser levada em
+      consideração a contratação de um suporte comercial.
+     </p><p>
+     </p></li><li class="listitem"><p>
+      Informações da plataforma. Isso inclui o nome e a versão do núcleo,
+      a biblioteca C, o processador e a memória. Geralmente basta
+      informar o fornecedor e a versão, mas não se deve supor que todo
+      mundo saiba exatamente o que o <span class="quote">“<span class="quote">Debian</span>”</span> contém,
+      ou que todo mundo use x86_64. Havendo problemas de instalação,
+      então também são necessárias informações sobre as ferramentas
+      empregadas (compilador, <span class="application">make</span>, etc.).
+     </p></li></ul></div><p>
+
+   Não tenha medo de que seu relatório de erro fique muito longo.
+   Este é um fato da vida. É melhor informar tudo da primeira vez do que
+   termos que extrair os fatos de você. Por outro lado, se seus arquivos
+   de entrada são muito grandes, é justo perguntar primeiro se alguém
+   está interessado em vê-los. Aqui está um
+   <a class="ulink" href="https://www.chiark.greenend.org.uk/~sgtatham/bugs-br.html" target="_top">artigo</a>
+   que dá mais algumas dicas sobre como relatar erros.
+  </p><p>
+   Não perca todo o seu tempo tentando descobrir que mudanças na entrada
+   vão fazer o problema desaparecer. Isso provavelmente não vai ajudar a
+   solucionar o problema. Se for visto que o erro não pode ser corrigido
+   imediatamente, você vai ter tempo para descobrir e compartilhar
+   sua descoberta. Também, novamente, não perca seu tempo adivinhando
+   por que o erro existe, nós o descobriremos em breve.
+  </p><p>
+   Ao escrever o relatório de erro, por favor, escolha uma terminologia
+   que não confunda. O pacote de <span class="foreignphrase"><em class="foreignphrase">software</em></span>
+   em seu todo é chamado de <span class="quote">“<span class="quote">PostgreSQL</span>”</span> e, algumas vezes,
+   de <span class="quote">“<span class="quote">Postgres</span>”</span> para abreviar.
+   Se estiver se referindo especificamente ao processo servidor, mencione
+   isso, não diga apenas <span class="quote">“<span class="quote">o PostgreSQL travou</span>”</span>.
+   O travamento de um único processo servidor é bem diferente do travamento
+   do processo <span class="quote">“<span class="quote">postgres</span>”</span> pai; por favor, não diga
+   <span class="quote">“<span class="quote">servidor travado</span>”</span> quando um único processo servidor travou,
+   nem o contrário. Além disso, os programas cliente, como a interface
+   interativa <span class="quote">“<span class="quote"><span class="application">psql</span></span>”</span>, são
+   completamente separados do servidor. Por favor, tente especificar se
+   o problema está no lado cliente ou no lado servidor.
+  </p></div><div class="sect2" id="BUG-REPORTING-WHERE-TO-REPORT-BUGS"><div class="titlepage"><div><div><h3 class="title">5.3. Onde relatar erros? <a href="#BUG-REPORTING-WHERE-TO-REPORT-BUGS" class="id_link">#</a></h3></div></div></div><p>
+   Em geral, envie relatórios de erro para a lista de discussão
+   de relatórios de erros em
+   <code class="email">&lt;<a class="email" href="mailto:pgsql-bugs@lists.postgresql.org">pgsql-bugs@lists.postgresql.org</a>&gt;</code>.
+   É necessário utilizar um assunto descritivo para a mensagem de
+   correio eletrônico, talvez partes da própria mensagem de erro.
+  </p><p>
+   Outra forma é preencher o relatório de erro disponível no
+   <a class="ulink" href="https://www.postgresql.org/account/submitbug/" target="_top">sítio do projeto</a>.
+   Preencher o relatório de erro desta forma faz com que seja enviado
+   para a lista de discussão
+   <code class="email">&lt;<a class="email" href="mailto:pgsql-bugs@lists.postgresql.org">pgsql-bugs@lists.postgresql.org</a>&gt;</code>.
+  </p><p>
+   Se o seu relatório de erro tiver implicações de segurança e você
+   preferir que ele não se torne imediatamente visível em arquivos
+   públicos, não envie para <code class="literal">pgsql-bugs</code>.
+   Os problemas de segurança podem ser reportados com privacidade para
+   <code class="email">&lt;<a class="email" href="mailto:security@postgresql.org">security@postgresql.org</a>&gt;</code>.
+  </p><p>
+   Não envie o relatório de erro para nenhuma lista de discussão dos
+   usuários, tal como <code class="email">&lt;<a class="email" href="mailto:pgsql-sql@lists.postgresql.org">pgsql-sql@lists.postgresql.org</a>&gt;</code> ou
+   <code class="email">&lt;<a class="email" href="mailto:pgsql-general@lists.postgresql.org">pgsql-general@lists.postgresql.org</a>&gt;</code>.
+   Estas listas de discussão são para responder perguntas dos usuários,
+   e seus assinantes normalmente não desejam receber relatórios de erro.
+   Mais importante ainda, eles provavelmente não vão conseguir corrigir o erro.
+  </p><p>
+   Por favor, também <span class="emphasis"><em>não</em></span> envie relatórios para a
+   lista de discussão dos desenvolvedores em
+   <code class="email">&lt;<a class="email" href="mailto:pgsql-hackers@lists.postgresql.org">pgsql-hackers@lists.postgresql.org</a>&gt;</code>.
+   Esta lista tem por finalidade discutir o desenvolvimento do
+   <span class="productname">PostgreSQL</span>, e seria bom se pudéssemos
+   manter os relatórios de erros separados. Podemos optar por assumir uma
+   discussão sobre seu relatório de erro em <code class="literal">pgsql-hackers</code>,
+   se o problema precisar de mais revisão.
+  </p><p>
+   Se você tiver um problema com a documentação, o melhor lugar para
+   reportá-lo é na lista de discussão de documentação
+   <code class="email">&lt;<a class="email" href="mailto:pgsql-docs@lists.postgresql.org">pgsql-docs@lists.postgresql.org</a>&gt;</code>. Por favor, seja
+   específico sobre qual parte da documentação você está insatisfeito.
+  </p><p>
+   Se o erro for um problema de portabilidade em uma plataforma sem
+   suporte, envie uma mensagem de correio eletrônico para
+   <code class="email">&lt;<a class="email" href="mailto:pgsql-hackers@lists.postgresql.org">pgsql-hackers@lists.postgresql.org</a>&gt;</code>, para que nós
+   (e você) possamos trabalhar para portar o
+   <span class="productname">PostgreSQL</span> para esta plataforma.
+  </p><div class="note"><h3 class="title">Nota</h3><p>
+    Devido à quantidade lamentável de <span class="foreignphrase"><em class="foreignphrase">spam</em></span>
+    circulando, todas as listas acima serão moderadas, a menos que você
+    esteja inscrito, significando que haverá algum atraso antes que o
+    e-mail seja entregue. Se desejar se inscrever nas listas, visite
+    <a class="ulink" href="https://lists.postgresql.org/" target="_top">https://lists.postgresql.org/</a> para obter
+    instruções.
+   </p></div></div></div><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="resources.html" title="4. Informações adicionais">Anterior</a> </td><td width="20%" align="center"><a accesskey="u" href="preface.html" title="Prefácio">Acima</a></td><td width="40%" align="right"> <a accesskey="n" href="tutorial.html" title="Parte I. Tutorial">Próxima</a></td></tr><tr><td width="40%" align="left" valign="top">4. Informações adicionais </td><td width="20%" align="center"><a accesskey="h" href="index.html" title="Documentação do PostgreSQL 18.1">Principal</a></td><td width="40%" align="right" valign="top"> Parte I. Tutorial</td></tr></table></div></body></html>
