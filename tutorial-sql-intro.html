@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>2.1. Introdução - PostgreSQL 18.1</title><link rel="stylesheet" type="text/css" href="stylesheet.css" /><link rev="made" href="pgsql-docs@lists.postgresql.org" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="tutorial-sql.html" title="Capítulo 2. A Linguagem SQL" /><link rel="next" href="tutorial-concepts.html" title="2.2. Conceitos" /></head><body id="docContent" class="container-fluid col-10"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="5" align="center">2.1. Introdução</th></tr><tr><td width="10%" align="left"><a accesskey="p" href="tutorial-sql.html" title="Capítulo 2. A Linguagem SQL">Anterior</a> </td><td width="10%" align="left"><a accesskey="u" href="tutorial-sql.html" title="Capítulo 2. A Linguagem SQL">Acima</a></td><th width="60%" align="center">Capítulo 2. A Linguagem <acronym class="acronym">SQL</acronym></th><td width="10%" align="right"><a accesskey="h" href="index.html" title="Documentação do PostgreSQL 18.1">Principal</a></td><td width="10%" align="right"> <a accesskey="n" href="tutorial-concepts.html" title="2.2. Conceitos">Próxima</a></td></tr></table><hr /></div><div class="sect1" id="TUTORIAL-SQL-INTRO"><div class="titlepage"><div><div><h2 class="title" style="clear: both">2.1. Introdução <a href="#TUTORIAL-SQL-INTRO" class="id_link">#</a></h2></div></div></div><p>
+    Este capítulo fornece uma visão geral sobre como utilizar a linguagem
+    <acronym class="acronym">SQL</acronym> para realizar operações simples. O propósito
+    deste tutorial é apenas fornecer uma introdução e, de forma alguma,
+    ser um tutorial completo sobre a linguagem <acronym class="acronym">SQL</acronym>.
+    Existem muitos livros escritos sobre a linguagem <acronym class="acronym">SQL</acronym>,
+    incluindo <a class="xref" href="biblio.html#MELT93" title="Understanding the New SQL">[melt93]</a> e <a class="xref" href="biblio.html#DATE97" title="A Guide to the SQL Standard">[date97]</a>.
+    É preciso estar ciente de que algumas funcionalidades da linguagem
+    <acronym class="acronym">SQL</acronym> do <span class="productname">PostgreSQL</span> são
+    extensões ao padrão.
+   </p><p>
+    Nos exemplos a seguir é presumido que tenha sido criado o banco de
+    dados chamado <code class="literal">meu_bd</code>, conforme descrito no capítulo
+    anterior, e que o <code class="command">psql</code> esteja ativo.
+   </p><p>
+    Os exemplos presentes nesse manual também podem ser encontrados na
+    distribuição do código-fonte do <span class="productname">PostgreSQL</span>,
+    no diretório <code class="filename">src/tutorial/</code>.
+    (As distribuições binárias do <span class="productname">PostgreSQL</span>
+    podem não fornecer esses arquivos.)
+    Para usar estes arquivos, primeiro deve-se tornar o diretório
+    <code class="filename">src/tutorial/</code> o diretório corrente e, depois,
+    executar o utilitário <span class="application">make</span>, conforme
+    mostrado abaixo:
+</p><pre class="screen">
+<code class="prompt">$</code> <strong class="userinput"><code>cd <em class="replaceable"><code>...</code></em>/src/tutorial</code></strong>
+<code class="prompt">$</code> <strong class="userinput"><code>make</code></strong>
+</pre><p>
+    Os comandos acima criam os scripts e compilam os arquivos C
+    contendo funções e tipos definidos pelo usuário.
+    Em seguida, para iniciar o tutorial, execute o seguinte:
+</p><pre class="screen">
+<code class="prompt">$</code> <strong class="userinput"><code>psql -s meu_bd</code></strong>
+<code class="computeroutput">
+...
+</code>
+<code class="prompt">mydb=&gt;</code> <strong class="userinput"><code>\i basics.sql</code></strong>
+</pre><p>
+    O comando <code class="literal">\i</code> do <code class="command">psql</code>
+    faz a leitura dos comandos do arquivo especificado.
+    A opção <code class="literal">-s</code> ativa o modo passo a passo,
+    que faz uma pausa antes de enviar cada comando para o servidor.
+    Os comandos utilizados nesta seção estão no arquivo
+    <code class="filename">basics.sql</code>.
+   </p></div><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="tutorial-sql.html" title="Capítulo 2. A Linguagem SQL">Anterior</a> </td><td width="20%" align="center"><a accesskey="u" href="tutorial-sql.html" title="Capítulo 2. A Linguagem SQL">Acima</a></td><td width="40%" align="right"> <a accesskey="n" href="tutorial-concepts.html" title="2.2. Conceitos">Próxima</a></td></tr><tr><td width="40%" align="left" valign="top">Capítulo 2. A Linguagem <acronym class="acronym">SQL</acronym> </td><td width="20%" align="center"><a accesskey="h" href="index.html" title="Documentação do PostgreSQL 18.1">Principal</a></td><td width="40%" align="right" valign="top"> 2.2. Conceitos</td></tr></table></div></body></html>

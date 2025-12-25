@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>2.2. Conceitos - PostgreSQL 18.1</title><link rel="stylesheet" type="text/css" href="stylesheet.css" /><link rev="made" href="pgsql-docs@lists.postgresql.org" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="tutorial-sql-intro.html" title="2.1. Introdução" /><link rel="next" href="tutorial-table.html" title="2.3. Criação de tabelas" /></head><body id="docContent" class="container-fluid col-10"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="5" align="center">2.2. Conceitos</th></tr><tr><td width="10%" align="left"><a accesskey="p" href="tutorial-sql-intro.html" title="2.1. Introdução">Anterior</a> </td><td width="10%" align="left"><a accesskey="u" href="tutorial-sql.html" title="Capítulo 2. A Linguagem SQL">Acima</a></td><th width="60%" align="center">Capítulo 2. A Linguagem <acronym class="acronym">SQL</acronym></th><td width="10%" align="right"><a accesskey="h" href="index.html" title="Documentação do PostgreSQL 18.1">Principal</a></td><td width="10%" align="right"> <a accesskey="n" href="tutorial-table.html" title="2.3. Criação de tabelas">Próxima</a></td></tr></table><hr /></div><div class="sect1" id="TUTORIAL-CONCEPTS"><div class="titlepage"><div><div><h2 class="title" style="clear: both">2.2. Conceitos <a href="#TUTORIAL-CONCEPTS" class="id_link">#</a></h2></div></div></div><p>
+    <a id="id-1.4.4.3.2.1" class="indexterm"></a>
+    <a id="id-1.4.4.3.2.2" class="indexterm"></a>
+    <a id="id-1.4.4.3.2.3" class="indexterm"></a>
+    <a id="id-1.4.4.3.2.4" class="indexterm"></a>
+    <a id="id-1.4.4.3.2.5" class="indexterm"></a>
+    O <span class="productname">PostgreSQL</span> é um <em class="firstterm">sistema de
+    gerenciamento de banco de dados relacional</em>
+    (<acronym class="acronym">SGBDR</acronym>). Isso significa que é um sistema para
+    gerenciar dados armazenados em <em class="firstterm">relações</em>.
+    Relação é, essencialmente, um termo matemático para
+    <em class="firstterm">tabela</em>. A noção de armazenar dados em tabelas
+    é tão comum hoje em dia que pode parecer totalmente óbvio, mas
+    existem várias outras maneiras de organizar bancos de dados.
+    Arquivos e diretórios em sistemas operacionais tipo
+    <span class="productname">Unix</span> são um exemplo de banco de dados
+    hierárquico. Um desenvolvimento mais moderno são os bancos de dados
+    orientados a objetos.
+   </p><p>
+    <a id="id-1.4.4.3.3.1" class="indexterm"></a>
+    <a id="id-1.4.4.3.3.2" class="indexterm"></a>
+    Cada tabela é uma coleção, com nome, de <em class="firstterm">linhas</em>.
+    Todas as linhas de uma determinada tabela possuem o mesmo conjunto
+    de <em class="firstterm">colunas</em>, e cada coluna tem nome e é de um
+    tipo de dados específico. Enquanto as colunas possuem uma ordem fixa
+    nas linhas, é importante lembrar que o <acronym class="acronym">SQL</acronym> não
+    garante, de forma alguma, a ordem das linhas dentro da tabela (embora
+    as linhas possam ser explicitamente ordenadas para exibição).
+   </p><p>
+    <a id="id-1.4.4.3.4.1" class="indexterm"></a>
+    <a id="id-1.4.4.3.4.2" class="indexterm"></a>
+    As tabelas são agrupadas em bancos de dados, e um conjunto de bancos
+    de dados gerenciados por uma única instância do servidor
+    <span class="productname">PostgreSQL</span> forma um
+    <span class="foreignphrase"><em class="foreignphrase">cluster</em></span>
+    (<em class="firstterm">agrupamento de bancos de dados</em>).
+   </p></div><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="tutorial-sql-intro.html" title="2.1. Introdução">Anterior</a> </td><td width="20%" align="center"><a accesskey="u" href="tutorial-sql.html" title="Capítulo 2. A Linguagem SQL">Acima</a></td><td width="40%" align="right"> <a accesskey="n" href="tutorial-table.html" title="2.3. Criação de tabelas">Próxima</a></td></tr><tr><td width="40%" align="left" valign="top">2.1. Introdução </td><td width="20%" align="center"><a accesskey="h" href="index.html" title="Documentação do PostgreSQL 18.1">Principal</a></td><td width="40%" align="right" valign="top"> 2.3. Criação de tabelas</td></tr></table></div></body></html>

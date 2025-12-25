@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>2.5. Consultar uma tabela - PostgreSQL 18.1</title><link rel="stylesheet" type="text/css" href="stylesheet.css" /><link rev="made" href="pgsql-docs@lists.postgresql.org" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="tutorial-populate.html" title="2.4. Inserção de linhas na tabela" /><link rel="next" href="tutorial-join.html" title="2.6. Junções entre tabelas" /></head><body id="docContent" class="container-fluid col-10"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="5" align="center">2.5. Consultar uma tabela</th></tr><tr><td width="10%" align="left"><a accesskey="p" href="tutorial-populate.html" title="2.4. Inserção de linhas na tabela">Anterior</a> </td><td width="10%" align="left"><a accesskey="u" href="tutorial-sql.html" title="Capítulo 2. A Linguagem SQL">Acima</a></td><th width="60%" align="center">Capítulo 2. A Linguagem <acronym class="acronym">SQL</acronym></th><td width="10%" align="right"><a accesskey="h" href="index.html" title="Documentação do PostgreSQL 18.1">Principal</a></td><td width="10%" align="right"> <a accesskey="n" href="tutorial-join.html" title="2.6. Junções entre tabelas">Próxima</a></td></tr></table><hr /></div><div class="sect1" id="TUTORIAL-SELECT"><div class="titlepage"><div><div><h2 class="title" style="clear: both">2.5. Consultar uma tabela <a href="#TUTORIAL-SELECT" class="id_link">#</a></h2></div></div></div><p>
+    <a id="id-1.4.4.6.2.1" class="indexterm"></a>
+    <a id="id-1.4.4.6.2.2" class="indexterm"></a>
+    Para trazer os dados de uma tabela, a tabela deve ser
+    <em class="firstterm">consultada</em>. Para esta finalidade é utilizado
+    o comando <code class="command">SELECT</code> do <acronym class="acronym">SQL</acronym>.
+    Esse comando é dividido em lista de seleção (a parte que especifica
+    as colunas a serem trazidas), lista de tabelas (a parte que especifica
+    as tabelas de onde os dados vão ser trazidos), e uma qualificação
+    opcional (a parte onde são especificadas as restrições).
+    Por exemplo, para trazer todas as linhas da tabela
+    <code class="structname">clima</code>, execute:
+</p><pre class="programlisting">
+SELECT * FROM clima;
+</pre><p>
+    Aqui o <code class="literal">*</code> é uma forma abreviada para
+    <span class="quote">“<span class="quote">todas as colunas</span>”</span>.
+     <a href="#ftn.id-1.4.4.6.2.10" class="footnote"><sup class="footnote" id="id-1.4.4.6.2.10">[9]</sup></a>
+    Seriam obtidos os mesmos resultados usando:
+</p><pre class="programlisting">
+SELECT cidade, temp_min, temp_max, prcp, data
+    FROM clima;
+</pre><p>
+A saída deve ser:
+</p><pre class="programlisting">
+       cidade        | temp_min | temp_max | prcp |    data
+---------------------+----------+----------+------+------------
+ Salvador - BA       |       21 |       28 |  3.4 | 2022-06-25
+ Salvador - BA       |       23 |       27 |    0 | 2022-06-26
+ Rio de Janeiro - RJ |       17 |       29 |      | 2022-06-29
+(3 linhas)
+</pre><p>
+   </p><p>
+    Na lista de seleção podem ser escritas expressões, e não apenas
+    referências a colunas. Por exemplo, pode ser executado:
+</p><pre class="programlisting">
+SELECT cidade,
+       (temp_min+temp_max)/2 AS temp_media,
+       data
+    FROM clima;
+</pre><p>
+    devendo produzir:
+</p><pre class="programlisting">
+       cidade        | temp_media |    data
+---------------------+------------+------------
+ Salvador - BA       |         24 | 2022-06-25
+ Salvador - BA       |         25 | 2022-06-26
+ Rio de Janeiro - RJ |         23 | 2022-06-29
+(3 linhas)
+</pre><p>
+    Perceba que a cláusula <code class="literal">AS</code> foi utilizada para
+    mudar o nome da coluna na saída (a cláusula <code class="literal">AS</code>
+    é opcional).
+   </p><p>
+    A consulta pode ser <span class="quote">“<span class="quote">qualificada</span>”</span>, adicionando a
+    cláusula <code class="literal">WHERE</code> para especificar as linhas desejadas.
+    A cláusula <code class="literal">WHERE</code> contém expressões booleanas
+    (valor verdade), fazendo com que somente sejam retornadas as linhas para
+    as quais o resultado da expressão booleana for verdade.
+    São permitidos os operadores booleanos usuais (<code class="literal">AND</code>,
+    <code class="literal">OR</code> e <code class="literal">NOT</code>) na qualificação.
+    Por exemplo, o comando abaixo mostra o clima de <span class="quote">“<span class="quote">Salvador - BA</span>”</span>
+    nos dias de chuva:
+</p><pre class="programlisting">
+SELECT *
+    FROM clima
+    WHERE cidade = 'Salvador - BA'
+      AND prcp &gt; 0;
+</pre><p>
+    Resultado:
+</p><pre class="programlisting">
+    cidade     | temp_min | temp_max | prcp |    data
+---------------+----------+----------+------+------------
+ Salvador - BA |       21 |       28 |  3.4 | 2022-06-25
+(1 linha)
+</pre><p>
+   </p><p>
+    <a id="id-1.4.4.6.5.1" class="indexterm"></a>
+    Pode ser solicitado que os resultados da consulta sejam retornados
+    de forma ordenada:
+</p><pre class="programlisting">
+SELECT *
+    FROM clima
+    ORDER BY cidade;
+
+       cidade        | temp_min | temp_max | prcp |    data
+---------------------+----------+----------+------+------------
+ Rio de Janeiro - RJ |       17 |       29 |      | 2022-06-29
+ Salvador - BA       |       21 |       28 |  3.4 | 2022-06-25
+ Salvador - BA       |       23 |       27 |    0 | 2022-06-26
+(3 linhas)
+</pre><p>
+    Neste exemplo a ordem de classificação não está completamente
+    especificada, portanto as linhas de <span class="quote">“<span class="quote">Salvador - BA</span>”</span>
+    podem retornar em qualquer ordem.
+    Mas sempre seriam obtidos os resultados mostrados acima se fosse
+    executado:
+</p><pre class="programlisting">
+SELECT *
+    FROM clima
+    ORDER BY cidade, temp_min;
+</pre><p>
+   </p><p>
+    <a id="id-1.4.4.6.6.1" class="indexterm"></a>
+    <a id="id-1.4.4.6.6.2" class="indexterm"></a>
+    Pode ser solicitado que as linhas duplicadas sejam removidas do
+    resultado da consulta:
+</p><pre class="programlisting">
+SELECT DISTINCT cidade
+    FROM clima;
+
+       cidade
+---------------------
+ Rio de Janeiro - RJ
+ Salvador - BA
+(2 linhas)
+</pre><p>
+    Novamente, neste exemplo a ordem das linhas pode variar.
+    Pode-se garantir resultados consistentes utilizando
+    <code class="literal">DISTINCT</code> e <code class="literal">ORDER BY</code> juntos:
+     <a href="#ftn.id-1.4.4.6.6.6" class="footnote"><sup class="footnote" id="id-1.4.4.6.6.6">[10]</sup></a>
+</p><pre class="programlisting">
+SELECT DISTINCT cidade
+    FROM clima
+    ORDER BY cidade;
+
+       cidade
+---------------------
+ Rio de Janeiro - RJ
+ Salvador - BA
+(2 linhas)
+</pre><p>
+   </p><div class="footnotes"><br /><hr style="width:100; text-align:left;margin-left: 0" /><div id="ftn.id-1.4.4.6.2.10" class="footnote"><p><a href="#id-1.4.4.6.2.10" class="para"><sup class="para">[9] </sup></a>
+       Embora o <code class="literal">SELECT *</code> seja útil para consultas
+       improvisadas, é geralmente considerado um estilo ruim para código
+       em produção, uma vez que a adição de uma coluna à tabela mudaria
+       os resultados.
+      </p></div><div id="ftn.id-1.4.4.6.6.6" class="footnote"><p><a href="#id-1.4.4.6.6.6" class="para"><sup class="para">[10] </sup></a>
+       Em alguns sistemas de banco de dados, incluindo versões antigas
+       do <span class="productname">PostgreSQL</span>, a implementação do
+       <code class="literal">DISTINCT</code> ordena automaticamente as linhas e,
+       por isso, o <code class="literal">ORDER BY</code> não é necessário.
+       Mas isso não é requerido pelo padrão <acronym class="acronym">SQL</acronym>,
+       e o <span class="productname">PostgreSQL</span> atual não garante
+       que o <code class="literal">DISTINCT</code> faça com que as linhas sejam
+       ordenadas.
+      </p></div></div></div><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="tutorial-populate.html" title="2.4. Inserção de linhas na tabela">Anterior</a> </td><td width="20%" align="center"><a accesskey="u" href="tutorial-sql.html" title="Capítulo 2. A Linguagem SQL">Acima</a></td><td width="40%" align="right"> <a accesskey="n" href="tutorial-join.html" title="2.6. Junções entre tabelas">Próxima</a></td></tr><tr><td width="40%" align="left" valign="top">2.4. Inserção de linhas na tabela </td><td width="20%" align="center"><a accesskey="h" href="index.html" title="Documentação do PostgreSQL 18.1">Principal</a></td><td width="40%" align="right" valign="top"> 2.6. Junções entre tabelas</td></tr></table></div></body></html>

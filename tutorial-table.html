@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>2.3. Criação de tabelas - PostgreSQL 18.1</title><link rel="stylesheet" type="text/css" href="stylesheet.css" /><link rev="made" href="pgsql-docs@lists.postgresql.org" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="tutorial-concepts.html" title="2.2. Conceitos" /><link rel="next" href="tutorial-populate.html" title="2.4. Inserção de linhas na tabela" /></head><body id="docContent" class="container-fluid col-10"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="5" align="center">2.3. Criação de tabelas</th></tr><tr><td width="10%" align="left"><a accesskey="p" href="tutorial-concepts.html" title="2.2. Conceitos">Anterior</a> </td><td width="10%" align="left"><a accesskey="u" href="tutorial-sql.html" title="Capítulo 2. A Linguagem SQL">Acima</a></td><th width="60%" align="center">Capítulo 2. A Linguagem <acronym class="acronym">SQL</acronym></th><td width="10%" align="right"><a accesskey="h" href="index.html" title="Documentação do PostgreSQL 18.1">Principal</a></td><td width="10%" align="right"> <a accesskey="n" href="tutorial-populate.html" title="2.4. Inserção de linhas na tabela">Próxima</a></td></tr></table><hr /></div><div class="sect1" id="TUTORIAL-TABLE"><div class="titlepage"><div><div><h2 class="title" style="clear: both">2.3. Criação de tabelas <a href="#TUTORIAL-TABLE" class="id_link">#</a></h2></div></div></div><a id="id-1.4.4.4.2" class="indexterm"></a><p>
+    Você pode criar uma tabela especificando o seu nome juntamente com
+    os nomes das colunas e seus tipos de dados:
+</p><pre class="programlisting">
+CREATE TABLE clima (
+    cidade      varchar(80),  -- nome da cidade
+    temp_min    int,          -- temperatura mínima em °C
+    temp_max    int,          -- temperatura máxima em °C
+    prcp        real,         -- precipitação em mm
+    data        date          -- data
+);
+</pre><p>
+    Este comando pode ser digitado no <code class="command">psql</code> com
+    quebras de linha. O <code class="command">psql</code> reconhece que o comando
+    só termina quando é encontrado o ponto-e-vírgula.
+   </p><p>
+    Espaços em branco (ou seja, espaços, tabulações e novas linhas)
+    podem ser utilizados livremente nos comandos <acronym class="acronym">SQL</acronym>.
+    Isso significa que o comando pode ser digitado com um alinhamento
+    diferente do mostrado acima, ou mesmo tudo em uma única linha.
+    Dois hifens (<span class="quote">“<span class="quote"><code class="literal">--</code></span>”</span>)) iniciam um
+    comentário; tudo que vem depois é ignorado até o final da linha.
+    A linguagem <acronym class="acronym">SQL</acronym> não diferencia letras maiúsculas
+    e minúsculas nas palavras-chave e nos identificadores, a não ser que
+    os identificadores sejam delimitados por aspas (<code class="literal">"</code>)
+    para preservar as letras maiúsculas e minúsculas (o que não foi
+    feito acima).
+   </p><p>
+    No comando, <code class="type">varchar(80)</code> especifica um tipo de dados que
+    pode armazenar cadeias de caracteres arbitrárias com comprimento de
+    até 80 caracteres; <code class="type">int</code> é o tipo inteiro normal;
+    <code class="type">real</code> é o tipo para armazenar números de ponto flutuante
+    de precisão simples; <code class="type">date</code> é o tipo para armazenar data
+    e hora (a coluna do tipo <code class="type">date</code> pode se chamar
+    <code class="structfield">date</code>, o que tanto pode ser conveniente
+    quanto pode causar confusão — você decide).
+   </p><p>
+    O <span class="productname">PostgreSQL</span> aceita os tipos de dados
+    <acronym class="acronym">SQL</acronym> padrão <code class="type">int</code>,
+    <code class="type">smallint</code>, <code class="type">real</code>, <code class="type">double
+    precision</code>, <code class="type">char(<em class="replaceable"><code>N</code></em>)</code>,
+    <code class="type">varchar(<em class="replaceable"><code>N</code></em>)</code>, <code class="type">date</code>,
+    <code class="type">time</code>, <code class="type">timestamp</code>, e
+    <code class="type">interval</code>, assim como outros tipos de utilidade geral,
+    e um conjunto diversificado de tipos geométricos
+    O <span class="productname">PostgreSQL</span> pode ser personalizado com
+    um número arbitrário de tipos de dados definidos pelo usuário.
+    Como consequência, os nomes dos tipos de dados não são palavras-chave
+    na sintaxe, exceto onde for requerido para aceitar casos especiais
+    do padrão <acronym class="acronym">SQL</acronym>.
+   </p><p>
+    No segundo exemplo são armazenadas cidades e suas localizações
+    geográficas associadas:
+</p><pre class="programlisting">
+CREATE TABLE cidades (
+    nome         varchar(80),  -- nome da cidade
+    localizacao  point         -- coordenadas x, y (Longitude, Latitude)
+);
+</pre><p>
+    O tipo de dados <code class="type">point</code> é um exemplo de tipo de dados
+    específico do <span class="productname">PostgreSQL</span>.
+   </p><p>
+    <a id="id-1.4.4.4.8.1" class="indexterm"></a>
+    Para terminar, deve-se mencionar que quando a tabela não é mais
+    necessária, ou se deseja recriá-la de forma diferente,
+    é possível removê-la por meio do comando:
+</p><pre class="synopsis">
+DROP TABLE <em class="replaceable"><code>nome_da_tabela</code></em>;
+</pre><p>
+   </p></div><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="tutorial-concepts.html" title="2.2. Conceitos">Anterior</a> </td><td width="20%" align="center"><a accesskey="u" href="tutorial-sql.html" title="Capítulo 2. A Linguagem SQL">Acima</a></td><td width="40%" align="right"> <a accesskey="n" href="tutorial-populate.html" title="2.4. Inserção de linhas na tabela">Próxima</a></td></tr><tr><td width="40%" align="left" valign="top">2.2. Conceitos </td><td width="20%" align="center"><a accesskey="h" href="index.html" title="Documentação do PostgreSQL 18.1">Principal</a></td><td width="40%" align="right" valign="top"> 2.4. Inserção de linhas na tabela</td></tr></table></div></body></html>

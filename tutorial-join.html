@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>2.6. Junções entre tabelas - PostgreSQL 18.1</title><link rel="stylesheet" type="text/css" href="stylesheet.css" /><link rev="made" href="pgsql-docs@lists.postgresql.org" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="tutorial-select.html" title="2.5. Consultar uma tabela" /><link rel="next" href="tutorial-agg.html" title="2.7. Funções de agregação" /></head><body id="docContent" class="container-fluid col-10"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="5" align="center">2.6. Junções entre tabelas</th></tr><tr><td width="10%" align="left"><a accesskey="p" href="tutorial-select.html" title="2.5. Consultar uma tabela">Anterior</a> </td><td width="10%" align="left"><a accesskey="u" href="tutorial-sql.html" title="Capítulo 2. A Linguagem SQL">Acima</a></td><th width="60%" align="center">Capítulo 2. A Linguagem <acronym class="acronym">SQL</acronym></th><td width="10%" align="right"><a accesskey="h" href="index.html" title="Documentação do PostgreSQL 18.1">Principal</a></td><td width="10%" align="right"> <a accesskey="n" href="tutorial-agg.html" title="2.7. Funções de agregação">Próxima</a></td></tr></table><hr /></div><div class="sect1" id="TUTORIAL-JOIN"><div class="titlepage"><div><div><h2 class="title" style="clear: both">2.6. Junções entre tabelas <a href="#TUTORIAL-JOIN" class="id_link">#</a></h2></div></div></div><a id="id-1.4.4.7.2" class="indexterm"></a><p>
+    Até agora, nossas consultas acessaram apenas uma tabela por vez.
+    As consultas podem acessar várias tabelas ao mesmo tempo, ou acessar
+    a mesma tabela de forma que várias linhas da tabela sejam processadas
+    ao mesmo tempo. As consultas que acessam várias tabelas (ou várias
+    instâncias da mesma tabela) de uma vez, são chamadas de consultas de
+    <em class="firstterm">junção</em>. Elas combinam linhas de uma tabela com
+    linhas de uma segunda tabela, com uma expressão especificando quais
+    linhas devem ser juntadas. Por exemplo, para retornar todos os registros
+    meteorológicos junto com a localização da cidade associada, o banco
+    de dados precisa comparar a coluna <code class="structfield">cidade</code>
+    de cada linha da tabela <code class="structname">clima</code> com a coluna
+    <code class="structfield">nome</code> de todas as linhas da tabela
+    <code class="structname">cidades</code> e selecionar os pares de linhas
+    onde esses valores correspondem.
+     <a href="#ftn.id-1.4.4.7.3.6" class="footnote"><sup class="footnote" id="id-1.4.4.7.3.6">[11]</sup></a>
+    Esta operação pode ser efetuada por meio da seguinte consulta:
+</p><pre class="programlisting">
+SELECT *
+    FROM clima JOIN cidades ON cidade = nome;
+
+    cidade     | temp_min | temp_max | prcp |    data    |     nome      |      localizacao
+---------------+----------+----------+------+------------+---------------+-----------------------
+ Salvador - BA |       21 |       28 |  3.4 | 2022-06-25 | Salvador - BA | (-38.48806,-13.01477)
+ Salvador - BA |       23 |       27 |    0 | 2022-06-26 | Salvador - BA | (-38.48806,-13.01477)
+(2 linhas)
+</pre><p>
+   </p><p>
+    Duas observações sobre o resultado:
+    </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p>
+       Não existe linha para a cidade
+       <span class="emphasis"><em>Rio de Janeiro - RJ</em></span> no resultado produzido.
+       Isso acontece por não haver entrada correspondente na tabela
+       <code class="structname">cidades</code> para
+       <span class="emphasis"><em>Rio de Janeiro - RJ</em></span>, e a junção ignora as linhas
+       que não têm correspondência na tabela <code class="structname">clima</code>.
+       Veremos em breve como isso pode ser corrigido.
+      </p></li><li class="listitem"><p>
+       Existem duas colunas contendo o nome da cidade, o que está correto,
+       porque a lista de colunas das tabelas <code class="structname">clima</code>
+       e <code class="structname">cidades</code> estão concatenadas. Na prática
+       isso não é desejado, sendo preferível, portanto, escrever a lista
+       das colunas de saída explicitamente em vez de utilizar o
+       <code class="literal">*</code>:
+</p><pre class="programlisting">
+SELECT cidade, temp_min, temp_max, prcp,
+       data, localizacao
+    FROM clima JOIN cidades ON cidade = nome;
+</pre><p>
+      </p></li></ul></div><p>
+   </p><p>
+    Como todas as colunas possuem nomes diferentes, o analisador encontra
+    automaticamente a tabela que a coluna pertence. Se existissem nomes
+    de colunas duplicados nas duas tabelas, seria necessário
+    <em class="firstterm">qualificar</em> os nomes das colunas para indicar
+    qual delas está sendo referenciada, como em:
+</p><pre class="programlisting">
+SELECT clima.cidade, clima.temp_min,
+       clima.temp_max, clima.prcp,
+       clima.data, cidades.localizacao
+    FROM clima JOIN cidades ON cidade = nome;
+</pre><p>
+    Qualificar todos os nomes de colunas nas consultas de junção é
+    frequentemente considerado uma boa prática, para que a consulta não
+    falhe ao se adicionar posteriormente um nome de coluna duplicado a
+    uma das tabelas.
+   </p><p>
+    As consultas de junção do tipo visto até agora também podem ser
+    escritas da seguinte forma alternativa:
+</p><pre class="programlisting">
+SELECT *
+    FROM clima, cidades
+    WHERE cidade = nome;
+</pre><p>
+    Esta sintaxe é anterior à sintaxe
+    <code class="literal">JOIN</code>/<code class="literal">ON</code>,
+    introduzida no SQL-92.
+    As tabelas são simplesmente listadas na cláusula
+    <code class="literal">FROM</code>,
+    e a expressão de comparação é adicionada à cláusula
+    <code class="literal">WHERE</code>.
+    Os resultados dessa sintaxe implícita mais antiga e da sintaxe explícita
+    <code class="literal">JOIN</code>/<code class="literal">ON</code> mais recente são idênticos.
+    Mas para quem lê a consulta, a sintaxe explícita torna seu significado
+    mais fácil de entender: A condição de junção é introduzida por sua
+    própria palavra-chave, enquanto anteriormente a condição era misturada
+    na cláusula <code class="literal">WHERE</code> junto com outras condições.
+   </p><a id="id-1.4.4.7.7" class="indexterm"></a><p>
+    Agora vamos descobrir como se faz para obter as linhas de
+    <span class="emphasis"><em>Rio de Janeiro - RJ</em></span>. Desejamos o seguinte: que a
+    consulta examine a tabela <code class="structname">clima</code> e, para cada
+    uma de suas linhas, encontre a linha correspondente na tabela
+    <code class="structname">cidades</code>. Se não for encontrada nenhuma linha
+    correspondente, desejamos que sejam colocados
+    <span class="quote">“<span class="quote">valores vazios</span>”</span> (nulos) nas colunas da tabela
+    <code class="structname">cidades</code>. Esse tipo de consulta é chamada de
+    <em class="firstterm">junção externa</em> (<span class="foreignphrase"><em class="foreignphrase">outer join</em></span>).
+    As junções vistas até agora foram <em class="firstterm">junções internas</em>
+    (<span class="foreignphrase"><em class="foreignphrase">inner join</em></span>). O comando então fica assim:
+</p><pre class="programlisting">
+SELECT *
+    FROM clima
+        LEFT OUTER JOIN cidades
+        ON (clima.cidade = cidades.nome);
+
+       cidade        | temp_min | temp_max | prcp |    data    |     nome      |      localizacao
+---------------------+----------+----------+------+------------+---------------+-----------------------
+ Salvador - BA       |       21 |       28 |  3.4 | 2022-06-25 | Salvador - BA | (-38.48806,-13.01477)
+ Salvador - BA       |       23 |       27 |    0 | 2022-06-26 | Salvador - BA | (-38.48806,-13.01477)
+ Rio de Janeiro - RJ |       17 |       29 |      | 2022-06-29 |               |
+(3 linhas)
+</pre><p>
+    Esta consulta é chamada de <em class="firstterm">junção externa esquerda</em>
+    (<span class="foreignphrase"><em class="foreignphrase">left outer join</em></span>), porque a tabela mencionada
+    à esquerda do operador de junção terá cada uma de suas linhas mostrada
+    na saída pelo menos uma vez, enquanto a tabela à direita terá somente
+    as linhas correspondendo a alguma linha da tabela à esquerda mostrada
+    na saída. Ao listar uma linha da tabela à esquerda, para a qual não
+    existe nenhuma linha correspondente na tabela à direita, são colocados
+    valores vazios (nulos) nas colunas da tabela à direita.
+   </p><p><strong>Exercício: </strong>
+     Existem também a <em class="firstterm">junção externa direita</em>
+     (<span class="foreignphrase"><em class="foreignphrase">right outer join</em></span>) e a
+     <em class="firstterm">junção externa completa</em>
+     (<span class="foreignphrase"><em class="foreignphrase">full outer join</em></span>).
+     Tente descobrir o que fazem.
+    </p><a id="id-1.4.4.7.10" class="indexterm"></a><a id="id-1.4.4.7.11" class="indexterm"></a><p>
+    Também é possível fazer a junção da tabela consigo mesma.
+    Isso é chamado de <em class="firstterm">autojunção</em>
+    (<span class="foreignphrase"><em class="foreignphrase">self join</em></span>).
+    Como exemplo, suponha que desejamos descobrir todas as linhas de
+    clima que estão no intervalo de temperatura de outros registros de
+    clima. Para isso é necessário comparar as colunas
+    <code class="structfield">temp_min</code> e <code class="structfield">temp_max</code>
+    de cada linha da tabela <code class="structname">clima</code> com as colunas
+    <code class="structfield">temp_min</code> e <code class="structfield">temp_max</code>
+    de todas as outras linhas da mesma tabela <code class="structname">clima</code>,
+    o que pode ser feito utilizando a seguinte consulta:
+</p><pre class="programlisting">
+SELECT C1.cidade, C1.temp_min AS menor, C1.temp_max AS maior,
+       C2.cidade, C2.temp_min AS menor, C2.temp_max AS maior
+    FROM clima C1, clima C2
+    WHERE C1.temp_min &lt; C2.temp_min
+      AND C1.temp_max &gt; C2.temp_max;
+
+       cidade        | menor | maior |    cidade     | menor | maior
+---------------------+-------+-------+---------------+-------+-------
+ Salvador - BA       |    21 |    28 | Salvador - BA |    23 |    27
+ Rio de Janeiro - RJ |    17 |    29 | Salvador - BA |    21 |    28
+ Rio de Janeiro - RJ |    17 |    29 | Salvador - BA |    23 |    27
+(3 linhas)
+</pre><p>
+    A tabela clima teve seu nome mudado para <code class="literal">C1</code> e
+    <code class="literal">C2</code>, para ser possível distinguir o lado esquerdo
+    e o lado direito da junção. Esses tipos de <span class="quote">“<span class="quote">aliases</span>”</span>
+    também podem ser utilizados em outras consultas para reduzir a
+    digitação como, por exemplo:
+</p><pre class="programlisting">
+SELECT *
+    FROM clima w, cidades c
+    WHERE w.cidade = c.nome;
+</pre><p>
+    Será encontrada essa forma de abreviar com bastante frequência.
+   </p><div class="footnotes"><br /><hr style="width:100; text-align:left;margin-left: 0" /><div id="ftn.id-1.4.4.7.3.6" class="footnote"><p><a href="#id-1.4.4.7.3.6" class="para"><sup class="para">[11] </sup></a>
+       Esse é apenas um modelo conceitual, a junção é geralmente feita
+       de uma maneira mais eficiente que comparar cada par de
+       linhas possível, mas isso não é visível para o usuário.
+      </p></div></div></div><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="tutorial-select.html" title="2.5. Consultar uma tabela">Anterior</a> </td><td width="20%" align="center"><a accesskey="u" href="tutorial-sql.html" title="Capítulo 2. A Linguagem SQL">Acima</a></td><td width="40%" align="right"> <a accesskey="n" href="tutorial-agg.html" title="2.7. Funções de agregação">Próxima</a></td></tr><tr><td width="40%" align="left" valign="top">2.5. Consultar uma tabela </td><td width="20%" align="center"><a accesskey="h" href="index.html" title="Documentação do PostgreSQL 18.1">Principal</a></td><td width="40%" align="right" valign="top"> 2.7. Funções de agregação</td></tr></table></div></body></html>

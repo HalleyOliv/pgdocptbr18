@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>2.7. Funções de agregação - PostgreSQL 18.1</title><link rel="stylesheet" type="text/css" href="stylesheet.css" /><link rev="made" href="pgsql-docs@lists.postgresql.org" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="tutorial-join.html" title="2.6. Junções entre tabelas" /><link rel="next" href="tutorial-update.html" title="2.8. Atualizações" /></head><body id="docContent" class="container-fluid col-10"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="5" align="center">2.7. Funções de agregação</th></tr><tr><td width="10%" align="left"><a accesskey="p" href="tutorial-join.html" title="2.6. Junções entre tabelas">Anterior</a> </td><td width="10%" align="left"><a accesskey="u" href="tutorial-sql.html" title="Capítulo 2. A Linguagem SQL">Acima</a></td><th width="60%" align="center">Capítulo 2. A Linguagem <acronym class="acronym">SQL</acronym></th><td width="10%" align="right"><a accesskey="h" href="index.html" title="Documentação do PostgreSQL 18.1">Principal</a></td><td width="10%" align="right"> <a accesskey="n" href="tutorial-update.html" title="2.8. Atualizações">Próxima</a></td></tr></table><hr /></div><div class="sect1" id="TUTORIAL-AGG"><div class="titlepage"><div><div><h2 class="title" style="clear: both">2.7. Funções de agregação <a href="#TUTORIAL-AGG" class="id_link">#</a></h2></div></div></div><a id="id-1.4.4.8.2" class="indexterm"></a><p>
+    Como a maioria dos produtos de banco de dados relacional, o
+    <span class="productname">PostgreSQL</span> aceita
+    <em class="firstterm">funções de agregação</em>.
+    Uma função de agregação calcula um único resultado para várias
+    linhas de entrada. Por exemplo, existem funções de agregação para contar
+    (<code class="function">count</code>), somar (<code class="function">sum</code>),
+    calcular a média (<code class="function">avg</code>), o valor máximo
+    (<code class="function">max</code>) e o valor mínimo (<code class="function">min</code>)
+    para um conjunto de linhas.
+   </p><p>
+    Para servir de exemplo, é possível encontrar a maior temperatura
+    mínima observada em qualquer lugar usando:
+</p><pre class="programlisting">
+SELECT max(temp_min)
+    FROM clima;
+
+ max
+-----
+  23
+(1 linha)
+</pre><p>
+   </p><p>
+    <a id="id-1.4.4.8.5.1" class="indexterm"></a>
+    Se for desejado saber a cidade (ou cidades) onde essa temperatura
+    ocorreu, pode-se tentar usar
+</p><pre class="programlisting">
+SELECT cidade
+    FROM clima
+    WHERE temp_min = max(temp_min);  <span class="errortext">-- ERRADO</span>
+</pre><p>
+    mas não vai funcionar, porque a função de agregação
+    <code class="function">max</code> não pode ser usada na cláusula
+    <code class="literal">WHERE</code> (Esta restrição existe, porque a cláusula
+    <code class="literal">WHERE</code> determina quais linhas serão incluídas no
+    cálculo da agregação e, nesse caso, teria que ser avaliada antes das
+    funções de agregação serem computadas). Entretanto, como é geralmente
+    o caso, a consulta pode ser reformulada para obter o resultado
+    pretendido, o que será feito aqui por meio de uma
+    <em class="firstterm">subconsulta</em>:
+</p><pre class="programlisting">
+SELECT cidade
+    FROM clima
+    WHERE temp_min = (SELECT max(temp_min) FROM clima);
+
+    cidade
+---------------
+ Salvador - BA
+(1 linha)
+</pre><p>
+    Isso está correto, porque a subconsulta é uma ação independente, que
+    calcula sua agregação de forma isolada do que está acontecendo na
+    consulta externa.
+   </p><p>
+    <a id="id-1.4.4.8.6.1" class="indexterm"></a>
+    <a id="id-1.4.4.8.6.2" class="indexterm"></a>
+    As agregações também são muito úteis em combinação com a cláusula
+    <code class="literal">GROUP BY</code>. Por exemplo, pode ser obtida a maior
+    temperatura mínima observada em cada cidade usando:
+</p><pre class="programlisting">
+SELECT cidade, max(temp_min)
+    FROM clima
+    GROUP BY cidade;
+
+       cidade        | max
+---------------------+-----
+ Rio de Janeiro - RJ |  17
+ Salvador - BA       |  23
+(2 linhas)
+</pre><p>
+    produzindo uma linha de saída para cada cidade. Cada resultado da
+    agregação é computado sobre as linhas da tabela correspondendo a uma
+    cidade. As linhas agrupadas podem ser filtradas utilizando a cláusula
+    <code class="literal">HAVING</code>:
+</p><pre class="programlisting">
+SELECT cidade, max(temp_min)
+    FROM clima
+    GROUP BY cidade
+    HAVING max(temp_min) &lt; 30;
+
+       cidade        | max
+---------------------+-----
+ Rio de Janeiro - RJ |  17
+ Salvador - BA       |  23
+(2 linhas)
+</pre><p>
+    mostrando os mesmos resultados, mas apenas para as cidades que
+    possuem todas as temperaturas mínimas abaixo de 30. Para concluir,
+    se desejarmos somente as cidades com nome começando pela letra
+    <span class="quote">“<span class="quote"><code class="literal">S</code></span>”</span> podemos escrever:
+</p><pre class="programlisting">
+SELECT cidade, max(temp_min)
+    FROM clima
+    WHERE cidade LIKE 'S%'  -- <span id="co.tutorial-agg-like"></span>(1)
+    GROUP BY cidade
+    HAVING max(temp_min) &lt; 30;
+
+    cidade     | max
+---------------+-----
+ Salvador - BA |  23
+(1 linha)
+</pre><p>
+   </p><div class="calloutlist"><table border="0" summary="Callout list"><tr><td width="5%" valign="top" align="left"><p><a href="#co.tutorial-agg-like">(1)</a> </p></td><td valign="top" align="left"><p>
+      O operador <code class="literal">LIKE</code> faz correspondência com padrão,
+      sendo explicado na <a class="xref" href="functions-matching.html" title="9.7. Pattern Matching">Seção 9.7</a>.
+     </p></td></tr></table></div><p>
+   </p><p>
+    É importante compreender a interação entre a agregação e as cláusulas
+    <code class="literal">WHERE</code> e <code class="literal">HAVING</code> do
+    <acronym class="acronym">SQL</acronym>. A diferença fundamental entre
+    <code class="literal">WHERE</code> e <code class="literal">HAVING</code> é essa:
+    <code class="literal">WHERE</code> seleciona linhas da entrada antes que os
+    grupos e agregações sejam formados (assim, controla quais linhas
+    vão para o cálculo da agregação), enquanto <code class="literal">HAVING</code>
+    seleciona as linhas de grupo após os grupos e agregações serem formados.
+    Assim, a cláusula <code class="literal">WHERE</code> não deve conter funções
+    de agregação; não faz sentido tentar usar uma agregação para determinar
+    quais linhas servirão de entrada para a agregação. Por outro lado, a
+    cláusula <code class="literal">HAVING</code> sempre contém funções de agregação.
+    (Estritamente falando, é permitido escrever uma cláusula
+    <code class="literal">HAVING</code> que não usa agregações, mas raramente é útil.
+    A mesma condição pode ser usada de forma mais eficiente na cláusula
+    <code class="literal">WHERE</code>.)
+   </p><p>
+    No exemplo anterior, podemos aplicar a restrição do nome da cidade
+    na cláusula <code class="literal">WHERE</code>, porque ela não precisa de
+    agregação. Isso é mais eficiente do que adicionar a restrição à
+    cláusula <code class="literal">HAVING</code>, porque evitamos fazer os cálculos
+    de agrupamento e agregação para todas as linhas que falhariam na
+    condição da cláusula <code class="literal">WHERE</code>.
+   </p><p>
+    Outra forma de selecionar as linhas que entram em um cálculo de
+    agregação é usar a cláusula <code class="literal">FILTER</code>,
+    que é uma opção para cada agregação:
+</p><pre class="programlisting">
+SELECT cidade, count(*) FILTER (WHERE temp_min &lt; 20), max(temp_min)
+    FROM clima
+    GROUP BY cidade;
+
+       cidade        | count | max
+---------------------+-------+-----
+ Rio de Janeiro - RJ |     1 |  17
+ Salvador - BA       |     0 |  23
+(2 linhas)
+</pre><p>
+    A cláusula <code class="literal">FILTER</code> é muito parecida com a cláusula
+    <code class="literal">WHERE</code>, com a diferença de que remove linhas apenas
+    da entrada da função de agregação específica à qual está associada.
+    Aqui, a agregação <code class="literal">count</code> conta apenas as linhas com
+    <code class="literal">temp_min</code> abaixo de 20; mas a agregação
+    <code class="literal">max</code> ainda é aplicada a todas as linhas, então
+    ainda encontra a leitura de 23.
+   </p></div><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="tutorial-join.html" title="2.6. Junções entre tabelas">Anterior</a> </td><td width="20%" align="center"><a accesskey="u" href="tutorial-sql.html" title="Capítulo 2. A Linguagem SQL">Acima</a></td><td width="40%" align="right"> <a accesskey="n" href="tutorial-update.html" title="2.8. Atualizações">Próxima</a></td></tr><tr><td width="40%" align="left" valign="top">2.6. Junções entre tabelas </td><td width="20%" align="center"><a accesskey="h" href="index.html" title="Documentação do PostgreSQL 18.1">Principal</a></td><td width="40%" align="right" valign="top"> 2.8. Atualizações</td></tr></table></div></body></html>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>1.2. Conceitos básicos da arquitetura - PostgreSQL 18.1</title><link rel="stylesheet" type="text/css" href="stylesheet.css" /><link rev="made" href="pgsql-docs@lists.postgresql.org" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="tutorial-install.html" title="1.1. Instalação" /><link rel="next" href="tutorial-createdb.html" title="1.3. Criação de banco de dados" /></head><body id="docContent" class="container-fluid col-10"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="5" align="center">1.2. Conceitos básicos da arquitetura</th></tr><tr><td width="10%" align="left"><a accesskey="p" href="tutorial-install.html" title="1.1. Instalação">Anterior</a> </td><td width="10%" align="left"><a accesskey="u" href="tutorial-start.html" title="Capítulo 1. Começando">Acima</a></td><th width="60%" align="center">Capítulo 1. Começando</th><td width="10%" align="right"><a accesskey="h" href="index.html" title="Documentação do PostgreSQL 18.1">Principal</a></td><td width="10%" align="right"> <a accesskey="n" href="tutorial-createdb.html" title="1.3. Criação de banco de dados">Próxima</a></td></tr></table><hr /></div><div class="sect1" id="TUTORIAL-ARCH"><div class="titlepage"><div><div><h2 class="title" style="clear: both">1.2. Conceitos básicos da arquitetura <a href="#TUTORIAL-ARCH" class="id_link">#</a></h2></div></div></div><p>
+    Antes de prosseguir, você deve conhecer os fundamentos da
+    arquitetura do sistema <span class="productname">PostgreSQL</span>.
+    Compreender como as partes do <span class="productname">PostgreSQL</span>
+    interagem entre si torna esse capítulo um pouco mais claro.
+   </p><p>
+    No jargão de banco de dados, o <span class="productname">PostgreSQL</span>
+    utiliza o modelo cliente-servidor.
+    Uma sessão do <span class="productname">PostgreSQL</span> consiste nos
+    seguintes processos (programas) cooperando entre si:
+
+    </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p>
+       Um processo servidor, que gerencia os arquivos de banco de dados,
+       aceita conexões das aplicações cliente com o banco de dados e
+       executa ações no banco de dados em nome dos clientes.
+       O programa servidor de banco de dados se chama
+       <code class="filename">postgres</code>.
+       <a id="id-1.4.3.3.3.3.1.1.2" class="indexterm"></a>
+      </p></li><li class="listitem"><p>
+       A aplicação cliente (aplicação do usuário, também chamada de
+       <span class="foreignphrase"><em class="foreignphrase">frontend</em></span>) que deseja realizar
+       operações de banco de dados.
+       As aplicações cliente podem ser de naturezas muito diversas:
+       o cliente pode ser uma ferramenta no modo texto, uma
+       aplicação gráfica, um servidor Web que acessa o banco de dados
+       para mostrar páginas Web, ou uma ferramenta especializada para
+       manutenção do banco de dados. Algumas aplicações cliente são
+       fornecidas na distribuição do <span class="productname">PostgreSQL</span>,
+       sendo, em sua maioria, desenvolvidas pelos usuários.
+      </p></li></ul></div><p>
+   </p><p>
+    Como é típico na arquitetura cliente-servidor, o cliente e o servidor
+    podem estar em hospedeiros diferentes. Nesse caso, se comunicam
+    através de uma conexão de rede TCP/IP. Deve-se ter isso em mente,
+    porque arquivos que podem ser acessados na máquina cliente podem não
+    ser acessíveis pela máquina servidora (ou somente podem ser acessados
+    usando um nome de arquivo diferente).
+   </p><p>
+    O servidor <span class="productname">PostgreSQL</span> pode lidar com
+    várias conexões simultâneas de clientes. Para esta finalidade é
+    iniciado um novo processo (<span class="quote">“<span class="quote">fork</span>”</span>) para cada conexão.
+    Desse momento em diante, o cliente e o novo processo servidor se
+    comunicam sem intervenção do processo <code class="filename">postgres</code>
+    original. Portanto, o processo servidor supervisor está sempre
+    executando aguardando por novas conexões dos clientes, enquanto os
+    clientes e seus processos servidores associados aparecem e desaparecem
+    (obviamente tudo isso é invisível para o usuário, mencionado
+    apenas para ficar completo).
+   </p></div><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="tutorial-install.html" title="1.1. Instalação">Anterior</a> </td><td width="20%" align="center"><a accesskey="u" href="tutorial-start.html" title="Capítulo 1. Começando">Acima</a></td><td width="40%" align="right"> <a accesskey="n" href="tutorial-createdb.html" title="1.3. Criação de banco de dados">Próxima</a></td></tr><tr><td width="40%" align="left" valign="top">1.1. Instalação </td><td width="20%" align="center"><a accesskey="h" href="index.html" title="Documentação do PostgreSQL 18.1">Principal</a></td><td width="40%" align="right" valign="top"> 1.3. Criação de banco de dados</td></tr></table></div></body></html>

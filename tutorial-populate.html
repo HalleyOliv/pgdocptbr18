@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>2.4. Inserção de linhas na tabela - PostgreSQL 18.1</title><link rel="stylesheet" type="text/css" href="stylesheet.css" /><link rev="made" href="pgsql-docs@lists.postgresql.org" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="tutorial-table.html" title="2.3. Criação de tabelas" /><link rel="next" href="tutorial-select.html" title="2.5. Consultar uma tabela" /></head><body id="docContent" class="container-fluid col-10"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="5" align="center">2.4. Inserção de linhas na tabela</th></tr><tr><td width="10%" align="left"><a accesskey="p" href="tutorial-table.html" title="2.3. Criação de tabelas">Anterior</a> </td><td width="10%" align="left"><a accesskey="u" href="tutorial-sql.html" title="Capítulo 2. A Linguagem SQL">Acima</a></td><th width="60%" align="center">Capítulo 2. A Linguagem <acronym class="acronym">SQL</acronym></th><td width="10%" align="right"><a accesskey="h" href="index.html" title="Documentação do PostgreSQL 18.1">Principal</a></td><td width="10%" align="right"> <a accesskey="n" href="tutorial-select.html" title="2.5. Consultar uma tabela">Próxima</a></td></tr></table><hr /></div><div class="sect1" id="TUTORIAL-POPULATE"><div class="titlepage"><div><div><h2 class="title" style="clear: both">2.4. Inserção de linhas na tabela <a href="#TUTORIAL-POPULATE" class="id_link">#</a></h2></div></div></div><a id="id-1.4.4.5.2" class="indexterm"></a><p>
+    O comando <code class="command">INSERT</code> é usado para inserir linhas na
+    tabela:
+</p><pre class="programlisting">
+INSERT INTO clima
+    VALUES ('Salvador - BA', 21, 28, 3.4, '2022-06-25');
+</pre><p>
+    Repare que todos os tipos de dados possuem formato de entrada de dados
+    bastante óbvios. As constantes que não são valores numéricos simples,
+    geralmente devem estar entre apóstrofos (<code class="literal">'</code>), como
+    no exemplo acima. O tipo <code class="type">date</code> é, na verdade, muito
+    flexível em relação ao que aceita, mas para esse tutorial vamos nos
+    fixar no formato sem ambiguidade mostrado acima.
+     <a href="#ftn.id-1.4.4.5.3.5" class="footnote"><sup class="footnote" id="id-1.4.4.5.3.5">[7]</sup></a>
+   </p><p>
+    O tipo <code class="type">point</code> requer um par de coordenadas como entrada,
+    conforme mostrado abaixo:
+</p><pre class="programlisting">
+INSERT INTO cidades
+    VALUES ('Salvador - BA', '(-38.48806, -13.01477)');
+</pre><p>
+   </p><p>
+    A sintaxe usada até agora requer que seja lembrada a ordem das
+    colunas. Uma sintaxe alternativa permite declarar as colunas
+    explicitamente:
+</p><pre class="programlisting">
+INSERT INTO clima (data, cidade, temp_min, temp_max, prcp)
+    VALUES ('2022-06-26', 'Salvador - BA', 23, 27, 0);
+</pre><p>
+    Você pode listar as colunas em uma ordem diferente se desejar, ou
+    até mesmo omitir algumas colunas, por exemplo, se a precipitação for
+    desconhecida:
+</p><pre class="programlisting">
+INSERT INTO clima (data, cidade, temp_min, temp_max)
+    VALUES ('2022-06-29', 'Rio de Janeiro - RJ', 17, 29);
+</pre><p>
+    Muitos desenvolvedores consideram que declarar explicitamente as
+    colunas é um estilo melhor que confiar na ordem implícita.
+   </p><p>
+    Por favor, entre todos os comandos mostrados acima para ter alguns
+    dados para trabalhar nas próximas seções.
+   </p><p>
+    <a id="id-1.4.4.5.7.1" class="indexterm"></a>
+    Também pode ser utilizado o comando <code class="command">COPY</code> para
+    carregar uma grande quantidade de dados a partir de arquivos de
+    texto. Geralmente é mais rápido, porque o comando
+    <code class="command">COPY</code> é otimizado para essa finalidade, embora
+    possua menos flexibilidade que o comando <code class="command">INSERT</code>.
+    Como exemplo poderíamos ter:
+</p><pre class="programlisting">
+meu_bd=&gt; COPY clima FROM '/home/user/clima.txt';
+</pre><p>
+    onde o arquivo contendo os dados deve estar disponível para a máquina
+    servidora, e não para a estação cliente, porque o servidor lê o
+    arquivo diretamente.
+    Os dados inseridos acima na tabela meteorológica também poderiam ser
+    inseridos a partir de um arquivo contendo
+    (os valores são separados por um caractere de tabulação):
+</p><pre class="programlisting">
+Salvador - BA	21	28	3.4	2022-06-25
+Salvador - BA	23	27	0	 2022-06-26
+Rio de Janeiro - RJ	17	 29	\N	 2022-06-29
+</pre><p>
+    Podem ser obtidas mais informações sobre este comando em <a class="xref" href="sql-copy.html" title="COPY"><span class="refentrytitle">COPY</span></a>.
+    <a href="#ftn.id-1.4.4.5.7.8" class="footnote"><sup class="footnote" id="id-1.4.4.5.7.8">[8]</sup></a>
+   </p><div class="footnotes"><br /><hr style="width:100; text-align:left;margin-left: 0" /><div id="ftn.id-1.4.4.5.3.5" class="footnote"><p><a href="#id-1.4.4.5.3.5" class="para"><sup class="para">[7] </sup></a>
+       <a class="ulink" href="https://pt.wikipedia.org/wiki/ISO_8601" target="_top">ISO 8601</a>.
+       (N. T.)
+      </p></div><div id="ftn.id-1.4.4.5.7.8" class="footnote"><p><a href="#id-1.4.4.5.7.8" class="para"><sup class="para">[8] </sup></a>
+      DETALHE: Somente as funções de banco de dados (<span class="foreignphrase"><em class="foreignphrase">roles</em></span>)
+      com os privilégios da função de banco de dados "pg_read_server_files" podem executar
+      o comando <code class="command">COPY</code> para um arquivo;
+      DICA: Qualquer um pode utilizar o comando <code class="command">COPY</code> para a saída
+      stdout ou para a entrada padrão.
+      O comando <code class="command">\copy</code> do <code class="command">psql</code> funciona para
+      qualquer usuário. (Ex: meu_bd=&gt; \copy clima FROM '~/Trash/clima.txt');
+      (N. T.)
+     </p></div></div></div><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="tutorial-table.html" title="2.3. Criação de tabelas">Anterior</a> </td><td width="20%" align="center"><a accesskey="u" href="tutorial-sql.html" title="Capítulo 2. A Linguagem SQL">Acima</a></td><td width="40%" align="right"> <a accesskey="n" href="tutorial-select.html" title="2.5. Consultar uma tabela">Próxima</a></td></tr><tr><td width="40%" align="left" valign="top">2.3. Criação de tabelas </td><td width="20%" align="center"><a accesskey="h" href="index.html" title="Documentação do PostgreSQL 18.1">Principal</a></td><td width="40%" align="right" valign="top"> 2.5. Consultar uma tabela</td></tr></table></div></body></html>

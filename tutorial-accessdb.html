@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>1.4. Acesso a banco de dados - PostgreSQL 18.1</title><link rel="stylesheet" type="text/css" href="stylesheet.css" /><link rev="made" href="pgsql-docs@lists.postgresql.org" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="tutorial-createdb.html" title="1.3. Criação de banco de dados" /><link rel="next" href="tutorial-sql.html" title="Capítulo 2. A Linguagem SQL" /></head><body id="docContent" class="container-fluid col-10"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="5" align="center">1.4. Acesso a banco de dados</th></tr><tr><td width="10%" align="left"><a accesskey="p" href="tutorial-createdb.html" title="1.3. Criação de banco de dados">Anterior</a> </td><td width="10%" align="left"><a accesskey="u" href="tutorial-start.html" title="Capítulo 1. Começando">Acima</a></td><th width="60%" align="center">Capítulo 1. Começando</th><td width="10%" align="right"><a accesskey="h" href="index.html" title="Documentação do PostgreSQL 18.1">Principal</a></td><td width="10%" align="right"> <a accesskey="n" href="tutorial-sql.html" title="Capítulo 2. A Linguagem SQL">Próxima</a></td></tr></table><hr /></div><div class="sect1" id="TUTORIAL-ACCESSDB"><div class="titlepage"><div><div><h2 class="title" style="clear: both">1.4. Acesso a banco de dados <a href="#TUTORIAL-ACCESSDB" class="id_link">#</a></h2></div></div></div><a id="id-1.4.3.5.2" class="indexterm"></a><p>
+    Após o banco de dados ter sido criado, ele poderá ser acessado:
+
+    </p><div class="itemizedlist"><ul class="itemizedlist compact" style="list-style-type: bullet; "><li class="listitem" style="list-style-type: disc"><p>
+       Executando o programa de terminal interativo do
+       <span class="productname">PostgreSQL</span> chamado
+       <span class="application"><em class="firstterm">psql</em></span>,
+       que permite inserir, editar e executar comandos
+       <acronym class="acronym">SQL</acronym> interativamente.
+      </p></li><li class="listitem" style="list-style-type: disc"><p>
+       Usando uma ferramenta cliente gráfica existente, como o
+       <span class="application">pgAdmin</span>, ou um pacote de automação
+       de escritórios com suporte a <acronym class="acronym">ODBC</acronym>, ou
+       <acronym class="acronym">JDBC</acronym>, para criar e manipular bancos de dados.
+       Estas possibilidades não estão descritas nesse tutorial.
+      </p></li><li class="listitem" style="list-style-type: disc"><p>
+       Criando aplicações personalizadas, usando um dos vários vínculos
+       com linguagem disponíveis. Estas possibilidades são discutidas
+       mais detalhadamente em <a class="xref" href="client-interfaces.html" title="Parte IV. Interfaces cliente">Parte IV</a>.
+      </p></li></ul></div><p>
+
+    Você provavelmente vai desejar ativar o <code class="command">psql</code>
+    para executar os exemplos desse tutorial.
+    O <code class="command">psql</code> pode ser ativado para usar o banco de dados
+    <code class="literal">meu_bd</code> digitando o comando:
+</p><pre class="screen">
+<code class="prompt">$</code> <strong class="userinput"><code>psql meu_bd</code></strong>
+</pre><p>
+    Se o nome do banco de dados for omitido, então será usado o nome
+    padrão igual ao nome da conta do usuário no sistema operacional.
+    Você já descobriu esse mecanismo na seção anterior usando
+    <code class="command">createdb</code>.
+   </p><p>
+    O <code class="command">psql</code> saúda o usuário com a seguinte mensagem:
+</p><pre class="screen">
+psql (18.1)
+Digite "help" para obter ajuda.
+
+meu_bd=&gt;
+</pre><p>
+    <a id="id-1.4.3.5.4.3" class="indexterm"></a>
+    A última linha também pode ser:
+</p><pre class="screen">
+meu_bd=#
+</pre><p>
+    Significando que o usuário é um superusuário do banco de dados,
+    o que geralmente acontece quando você mesmo instalou o
+    <span class="productname">PostgreSQL</span>.
+    Ser um superusuário significa não estar sujeito a controles de acesso.
+    Para as finalidades desse tutorial isso não tem importância.
+   </p><p>
+    Caso tenha problemas ao executar o <code class="command">psql</code>,
+    retorne à seção anterior. Os diagnósticos do
+    <code class="command">createdb</code> e do <code class="command">psql</code> são
+    semelhantes e, se um funciona, o outro deverá funcionar também.
+   </p><p>
+    A última linha exibida pelo <code class="command">psql</code> é a linha de
+    comando (<span class="foreignphrase"><em class="foreignphrase">prompt</em></span>), indicando que o
+    <code class="command">psql</code> está lhe aguardando, e que você pode digitar
+    comandos <acronym class="acronym">SQL</acronym> dentro do espaço de trabalho mantido
+    pelo <code class="command">psql</code>. Tente esses comandos:
+    <a id="id-1.4.3.5.6.6" class="indexterm"></a>
+   </p><pre class="screen">
+meu_bd=&gt; SELECT version();
+                                                          version                                                           
+----------------------------------------------------------------------------------------------------------------------------
+ PostgreSQL 18.1 (Debian 18.1-1.pgdg12+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 12.2.0-14+deb12u1) 12.2.0, 64-bit
+(1 linha)
+
+meu_bd=&gt; SELECT current_date;
+ current_date 
+--------------
+ 2025-12-23
+(1 linha)
+
+meu_bd=&gt; SELECT 2 + 2;
+ ?column?
+----------
+        4
+(1 linha)
+
+meu_bd=&gt; SELECT 2 + 2 AS "Quatro";
+ Quatro 
+--------
+      4
+(1 linha)
+</pre><p>
+    O programa <code class="command">psql</code> possui vários comandos internos
+    que não são comandos <acronym class="acronym">SQL</acronym>. Esses comandos começam
+    pelo caractere de contrabarra, <span class="quote">“<span class="quote"><code class="literal">\</code></span>”</span>.
+    Por exemplo, pode ser obtida ajuda sobre a sintaxe de vários comandos
+    <acronym class="acronym">SQL</acronym> do <span class="productname">PostgreSQL</span>
+    digitando:
+   </p><pre class="screen">
+<code class="prompt">meu_bd=&gt;</code> <strong class="userinput"><code>\h</code></strong>
+</pre><p>
+    Para sair do <code class="command">psql</code>, digite:
+</p><pre class="screen">
+<code class="prompt">meu_bd=&gt;</code> <strong class="userinput"><code>\q</code></strong>
+</pre><p>
+    e o <code class="command">psql</code> terminará retornando para o interpretador
+    de comandos
+    <a href="#ftn.id-1.4.3.5.10.4" class="footnote"><sup class="footnote" id="id-1.4.3.5.10.4">[6]</sup></a>.
+    Para conhecer outros comandos internos digite <strong class="userinput"><code>\?</code></strong>
+    na linha de comando (<span class="foreignphrase"><em class="foreignphrase">prompt</em></span>) do
+    <code class="command">psql</code>. Todas as funcionalidades do
+    <code class="command">psql</code> estão documentadas em
+    <a class="xref" href="app-psql.html" title="psql"><span class="refentrytitle"><span class="application">psql</span></span></a>.
+    Neste tutorial estas funcionalidades não são usadas explicitamente,
+    mas você poderá usá-las por si próprio quando for útil.
+   </p><div class="footnotes"><br /><hr style="width:100; text-align:left;margin-left: 0" /><div id="ftn.id-1.4.3.5.10.4" class="footnote"><p><a href="#id-1.4.3.5.10.4" class="para"><sup class="para">[6] </sup></a>
+      Também pode ser usado <span class="keysym">Ctrl+D</span> ou <strong class="userinput"><code>exit</code></strong>
+      para sair do <code class="command">psql</code>. (N. T.)
+     </p></div></div></div><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="tutorial-createdb.html" title="1.3. Criação de banco de dados">Anterior</a> </td><td width="20%" align="center"><a accesskey="u" href="tutorial-start.html" title="Capítulo 1. Começando">Acima</a></td><td width="40%" align="right"> <a accesskey="n" href="tutorial-sql.html" title="Capítulo 2. A Linguagem SQL">Próxima</a></td></tr><tr><td width="40%" align="left" valign="top">1.3. Criação de banco de dados </td><td width="20%" align="center"><a accesskey="h" href="index.html" title="Documentação do PostgreSQL 18.1">Principal</a></td><td width="40%" align="right" valign="top"> Capítulo 2. A Linguagem <acronym class="acronym">SQL</acronym></td></tr></table></div></body></html>

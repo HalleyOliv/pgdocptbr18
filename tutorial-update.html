@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>2.8. Atualizações - PostgreSQL 18.1</title><link rel="stylesheet" type="text/css" href="stylesheet.css" /><link rev="made" href="pgsql-docs@lists.postgresql.org" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="tutorial-agg.html" title="2.7. Funções de agregação" /><link rel="next" href="tutorial-delete.html" title="2.9. Exclusões" /></head><body id="docContent" class="container-fluid col-10"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="5" align="center">2.8. Atualizações</th></tr><tr><td width="10%" align="left"><a accesskey="p" href="tutorial-agg.html" title="2.7. Funções de agregação">Anterior</a> </td><td width="10%" align="left"><a accesskey="u" href="tutorial-sql.html" title="Capítulo 2. A Linguagem SQL">Acima</a></td><th width="60%" align="center">Capítulo 2. A Linguagem <acronym class="acronym">SQL</acronym></th><td width="10%" align="right"><a accesskey="h" href="index.html" title="Documentação do PostgreSQL 18.1">Principal</a></td><td width="10%" align="right"> <a accesskey="n" href="tutorial-delete.html" title="2.9. Exclusões">Próxima</a></td></tr></table><hr /></div><div class="sect1" id="TUTORIAL-UPDATE"><div class="titlepage"><div><div><h2 class="title" style="clear: both">2.8. Atualizações <a href="#TUTORIAL-UPDATE" class="id_link">#</a></h2></div></div></div><a id="id-1.4.4.9.2" class="indexterm"></a><p>
+    As linhas existentes podem ser atualizadas utilizando o comando
+    <code class="command">UPDATE</code>. Suponha ter sido descoberto que as
+    leituras de temperatura realizadas após 25 de junho de 2022 estão
+    todas 2 graus mais altas.
+    Os dados podem ser corrigidos da seguinte maneira:
+</p><pre class="programlisting">
+UPDATE clima
+    SET temp_max = temp_max - 2,
+        temp_min = temp_min - 2
+    WHERE data &gt; '2022-06-25';
+</pre><p>
+   </p><p>
+    Agora vejamos como se encontram os dados:
+</p><pre class="programlisting">
+SELECT *
+    FROM clima;
+
+       cidade        | temp_min | temp_max | prcp |    data
+---------------------+----------+----------+------+------------
+ Salvador - BA       |       21 |       28 |  3.4 | 2022-06-25
+ Salvador - BA       |       21 |       25 |    0 | 2022-06-26
+ Rio de Janeiro - RJ |       15 |       27 |      | 2022-06-29
+(3 linhas)
+</pre><p>
+   </p></div><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="tutorial-agg.html" title="2.7. Funções de agregação">Anterior</a> </td><td width="20%" align="center"><a accesskey="u" href="tutorial-sql.html" title="Capítulo 2. A Linguagem SQL">Acima</a></td><td width="40%" align="right"> <a accesskey="n" href="tutorial-delete.html" title="2.9. Exclusões">Próxima</a></td></tr><tr><td width="40%" align="left" valign="top">2.7. Funções de agregação </td><td width="20%" align="center"><a accesskey="h" href="index.html" title="Documentação do PostgreSQL 18.1">Principal</a></td><td width="40%" align="right" valign="top"> 2.9. Exclusões</td></tr></table></div></body></html>

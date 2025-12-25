@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>2.9. Exclusões - PostgreSQL 18.1</title><link rel="stylesheet" type="text/css" href="stylesheet.css" /><link rev="made" href="pgsql-docs@lists.postgresql.org" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="tutorial-update.html" title="2.8. Atualizações" /><link rel="next" href="tutorial-advanced.html" title="Capítulo 3. Advanced Features" /></head><body id="docContent" class="container-fluid col-10"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="5" align="center">2.9. Exclusões</th></tr><tr><td width="10%" align="left"><a accesskey="p" href="tutorial-update.html" title="2.8. Atualizações">Anterior</a> </td><td width="10%" align="left"><a accesskey="u" href="tutorial-sql.html" title="Capítulo 2. A Linguagem SQL">Acima</a></td><th width="60%" align="center">Capítulo 2. A Linguagem <acronym class="acronym">SQL</acronym></th><td width="10%" align="right"><a accesskey="h" href="index.html" title="Documentação do PostgreSQL 18.1">Principal</a></td><td width="10%" align="right"> <a accesskey="n" href="tutorial-advanced.html" title="Capítulo 3. Advanced Features">Próxima</a></td></tr></table><hr /></div><div class="sect1" id="TUTORIAL-DELETE"><div class="titlepage"><div><div><h2 class="title" style="clear: both">2.9. Exclusões <a href="#TUTORIAL-DELETE" class="id_link">#</a></h2></div></div></div><a id="id-1.4.4.10.2" class="indexterm"></a><p>
+    As linhas podem ser excluídas da tabela através do comando
+    <code class="command">DELETE</code>. Suponha que não estamos mais interessados
+    no clima do <span class="quote">“<span class="quote">Rio de Janeiro - RJ</span>”</span>. Então podemos
+    executar o comando a seguir para excluir estas linhas da tabela:
+</p><pre class="programlisting">
+DELETE FROM clima
+    WHERE cidade = 'Rio de Janeiro - RJ';
+</pre><p>
+    e todos os registros de clima pertencentes a
+    <span class="quote">“<span class="quote">Rio de Janeiro - RJ</span>”</span> serão removidos.
+    Agora vejamos como se encontram os dados:
+</p><pre class="programlisting">
+SELECT *
+    FROM clima;
+
+    cidade     | temp_min | temp_max | prcp |    data
+---------------+----------+----------+------+------------
+ Salvador - BA |       21 |       28 |  3.4 | 2022-06-25
+ Salvador - BA |       21 |       25 |    0 | 2022-06-26
+(2 linhas)
+</pre><p>
+   </p><p>
+    Deve-se tomar cuidado com comandos na forma
+</p><pre class="synopsis">
+DELETE FROM <em class="replaceable"><code>nome_da_tabela</code></em>;
+</pre><p>
+    porque, sem uma qualificação, o comando <code class="command">DELETE</code>
+    remove <span class="emphasis"><em>todas</em></span> as linhas da tabela, deixando-a
+    vazia. O sistema não solicita confirmação antes de realizar esta
+    operação!
+   </p></div><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="tutorial-update.html" title="2.8. Atualizações">Anterior</a> </td><td width="20%" align="center"><a accesskey="u" href="tutorial-sql.html" title="Capítulo 2. A Linguagem SQL">Acima</a></td><td width="40%" align="right"> <a accesskey="n" href="tutorial-advanced.html" title="Capítulo 3. Advanced Features">Próxima</a></td></tr><tr><td width="40%" align="left" valign="top">2.8. Atualizações </td><td width="20%" align="center"><a accesskey="h" href="index.html" title="Documentação do PostgreSQL 18.1">Principal</a></td><td width="40%" align="right" valign="top"> Capítulo 3. Advanced Features</td></tr></table></div></body></html>
